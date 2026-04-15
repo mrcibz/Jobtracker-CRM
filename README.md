@@ -2,7 +2,7 @@
     <img width="1500" height="400" alt="JobTracker CRM Cover" src="/app/opengraph-image.jpg.png" />
 </a>
 
-<br/>
+<br/>   
 <br/>
 
 <div align="center">
@@ -13,7 +13,7 @@
 
 <div align="center" class="">
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=classic&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=classic&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=classic&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Vercel Ready](https://img.shields.io/badge/Vercel-Deploy-000000?style=classic&logo=vercel&logoColor=white)](https://vercel.com/)
 
