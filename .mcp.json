@@ -3,6 +3,11 @@
     "next-devtools": {
       "command": "cmd",
       "args": ["/c", "npx", "-y", "next-devtools-mcp@latest"]
+      
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["/c", "npx", "-y", "@playwright/mcp@latest"]
     }
   }
 }
