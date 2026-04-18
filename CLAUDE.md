@@ -4,4 +4,4 @@
 
 All page language must be english
 
-Tailwind animations plugin docs: https://tailwind-animations.com/
+Tailwind animations plugin docs: https://tailwind-animations.com/. All animations must respond to de viewport postion. use an observer

@@ -1,7 +1,5 @@
 function Logo({ className = "" }: { className?: string }) {
 
-  
-
   return (
     <svg
       viewBox="0 0 32 32"
@@ -50,6 +48,8 @@ function GithubMark({ className = "" }: { className?: string }) {
 }
 
 export default function Home() {
+  const year = new Date().getFullYear();
+
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden bg-zinc-50 font-sans text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
       <div
@@ -57,7 +57,7 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_50%_at_50%_0%,theme(colors.emerald.200/.55),transparent_70%),radial-gradient(50%_40%_at_100%_100%,theme(colors.sky.200/.45),transparent_70%)] dark:[background:radial-gradient(60%_50%_at_50%_0%,theme(colors.emerald.500/.15),transparent_70%),radial-gradient(50%_40%_at_100%_100%,theme(colors.sky.500/.12),transparent_70%)]"
       />
 
-      <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 sm:px-10">
+      <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 animate-fade-in-down animate-duration-slow sm:px-10">
         <div className="flex items-center gap-2.5">
           <Logo className="h-7 w-7" />
           <Wordmark />
@@ -66,32 +66,35 @@ export default function Home() {
           href="https://github.com/mrcibz/Jobtracker-CRM"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white/70 px-3 py-1.5 text-xs font-medium text-zinc-700 backdrop-blur transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-zinc-50"
+          aria-label="Open repository on GitHub"
+          className="group inline-flex items-center gap-2 rounded-full border border-zinc-200/80 bg-white/70 py-1.5 pl-2 pr-3.5 text-xs font-medium text-zinc-700 shadow-sm ring-1 ring-transparent backdrop-blur transition-all hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-white hover:text-zinc-900 hover:ring-zinc-900/5 dark:border-zinc-800/80 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-50 dark:hover:ring-white/5"
         >
-          <GithubMark className="h-3.5 w-3.5" />
-          <span>GitHub</span>
-          <span aria-hidden className="text-zinc-400 dark:text-zinc-500">↗</span>
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-zinc-50 transition-transform group-hover:rotate-[-6deg] dark:bg-zinc-50 dark:text-zinc-900">
+            <GithubMark className="h-3 w-3" />
+          </span>
+          <span>Star on GitHub</span>
+          <span aria-hidden className="text-zinc-400 transition-transform group-hover:translate-x-0.5 dark:text-zinc-500">→</span>
         </a>
       </header>
 
       <main className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-10 px-6 py-12 text-center sm:px-10">
         <div className="flex flex-col items-center gap-4">
-          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-medium text-zinc-600 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Zero-friction · No sign-ups
+          <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-medium text-zinc-600 backdrop-blur animate-fade-in-up animate-duration-slow dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-400">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+            Manage your job hunt
           </span>
-          <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
+          <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight animate-fade-in-up animate-delay-100 animate-duration-slow sm:text-6xl">
             Your job-hunt CRM.
             <br />
             <span className="text-zinc-500 dark:text-zinc-400">One link. No accounts.</span>
           </h1>
-          <p className="max-w-xl text-pretty text-base leading-7 text-zinc-600 dark:text-zinc-400 sm:text-lg">
+          <p className="max-w-xl text-pretty text-base leading-7 text-zinc-600 animate-fade-in-up animate-delay-200 animate-duration-slow dark:text-zinc-400 sm:text-lg">
             Spin up a new board instantly or jump back into yours with an ID.
-            Like Kahoot, but for your job applications.
+            Built to track your job applications.
           </p>
         </div>
 
-        <div className="grid w-full gap-4 sm:grid-cols-2">
+        <div className="grid w-full gap-4 animate-fade-in-up animate-delay-300 animate-duration-slow sm:grid-cols-2">
           <button
             type="button"
             className="group flex h-40 flex-col items-start justify-between rounded-2xl border border-zinc-900 bg-zinc-900 p-6 text-left text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
@@ -142,7 +145,7 @@ export default function Home() {
           </div>
         </div>
 
-        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-zinc-500 dark:text-zinc-500">
+        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-zinc-500 animate-fade-in-up animate-delay-500 animate-duration-slow dark:text-zinc-500">
           <li className="flex items-center gap-1.5">
             <span className="h-1 w-1 rounded-full bg-emerald-500" /> No passwords
           </li>
@@ -156,9 +159,15 @@ export default function Home() {
       </main>
 
       <footer className="relative z-10 border-t border-zinc-200/60 dark:border-zinc-800/60">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 text-xs text-zinc-500 sm:px-10 dark:text-zinc-500">
-          <span>Open Source</span>
-          <span>© 2026 JobTracker CRM</span>
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-6 py-5 text-xs text-zinc-500 sm:flex-row sm:px-10 dark:text-zinc-500">
+          <span className="font-medium text-zinc-600 dark:text-zinc-400">
+            Built to land interviews.
+          </span>
+          <div className="flex items-center gap-2">
+            <span>© {year} JobTracker CRM</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/favicon.ico" alt="" aria-hidden className="h-4 w-4 rounded-sm" />
+          </div>
         </div>
       </footer>
     </div>
