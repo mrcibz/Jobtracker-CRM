@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useMemo, startTransition } from "react";
+import { useState, useCallback, useRef, useMemo, useEffect, startTransition } from "react";
 import Link from "next/link";
 import { DragDropProvider } from "@dnd-kit/react";
 import type { Job, JobStatus } from "@/lib/types";
@@ -29,6 +29,14 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
   const [search, setSearch] = useState("");
   const pendingDrags = useRef<Set<string>>(new Set());
   const originalJobRef = useRef<Map<string, Job>>(new Map());
+
+  // On mobile, "All" is hidden. If current filter is "all" on small screens, default to wishlist.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (activeFilter === "all" && window.innerWidth < 768) {
+      setActiveFilter("wishlist");
+    }
+  }, []);
 
   // Filter jobs
   const filteredJobs = useMemo(() => {
@@ -102,19 +110,74 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
     setAddModalOpen(true);
   }, []);
 
+  const moveJob = useCallback((jobId: string, newStatus: JobStatus) => {
+    const job = jobs.find((j) => j.id === jobId);
+    if (!job || job.status === newStatus) return;
+
+    pendingDrags.current.add(jobId);
+
+    const leavingInterview = job.status === "interview" && newStatus !== "interview";
+    const leavingOffer = job.status === "offer" && newStatus !== "offer";
+    const enteringInterview = newStatus === "interview";
+    const enteringOffer = newStatus === "offer";
+
+    const cleanNotes = (leavingInterview || leavingOffer)
+      ? (job.notes
+          ? job.notes.replace(/\n?\n?--- (Interview Prep|Offer Details) ---\n[\s\S]*$/, "").trim() || null
+          : null)
+      : job.notes;
+
+    const cleanedJob: Job = {
+      ...job,
+      status: newStatus,
+      ...(leavingInterview ? { interview_date: null } : {}),
+      ...(leavingOffer ? { offer_salary: null, offer_deadline: null } : {}),
+      notes: cleanNotes,
+    };
+
+    setJobs((prev) => prev.map((j) => (j.id === jobId ? cleanedJob : j)));
+
+    if (enteringInterview || enteringOffer) {
+      originalJobRef.current.set(jobId, job);
+      if (enteringInterview) setInterviewModalJob(cleanedJob);
+      else setOfferModalJob(cleanedJob);
+      return;
+    }
+
+    if (leavingInterview || leavingOffer) {
+      startTransition(() => {
+        updateJob(jobId, boardId, {
+          status: newStatus,
+          ...(leavingInterview ? { interview_date: null } : {}),
+          ...(leavingOffer ? { offer_salary: null, offer_deadline: null } : {}),
+          notes: cleanNotes,
+        }).finally(() => {
+          pendingDrags.current.delete(jobId);
+        });
+      });
+      return;
+    }
+
+    startTransition(() => {
+      updateJobStatus(jobId, boardId, newStatus).finally(() => {
+        pendingDrags.current.delete(jobId);
+      });
+    });
+  }, [jobs, boardId]);
+
   return (
     <>
       {/* ─── Navbar ─── */}
-      <header className="flex items-center justify-between border-b border-gray-200 bg-white px-5 py-3 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="flex items-center gap-3">
+      <header className="flex items-center justify-between border-b border-gray-200 bg-white px-3 py-3 sm:px-5 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link href="/" className="flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-white">
               <img src="../favicon.ico" alt="favicon" />
             </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-zinc-50">Job Tracker</span>
           </Link>
-          <span className="text-gray-300 dark:text-zinc-600">/</span>
-          <span className="text-sm text-gray-600 dark:text-zinc-400">My Job Search</span>
+          <span className="hidden text-gray-300 sm:inline dark:text-zinc-600">/</span>
+          <span className="hidden text-sm text-gray-600 sm:inline dark:text-zinc-400">My Job Search</span>
           <span className="text-xs text-gray-400 dark:text-zinc-500">{jobs.length} offers</span>
         </div>
 
@@ -137,32 +200,39 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex cursor-pointer items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-violet-700"
+            className="flex cursor-pointer items-center gap-2 rounded-lg bg-violet-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-violet-700 sm:px-4"
           >
             <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M8 3v10M3 8h10" />
             </svg>
-            Add Job
+            <span className="hidden sm:inline">Add Job</span>
           </button>
         </div>
       </header>
 
       {/* ─── Filter tabs ─── */}
-      <div className="border-b border-gray-200 bg-white px-5 py-2 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="flex items-center gap-1">
-          {(["all", ...VALID_STATUSES] as const).map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter)}
-              className={`cursor-pointer rounded-md px-3 py-1 text-xs font-medium transition-all ${
-                activeFilter === filter
-                  ? "bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
-              }`}
-            >
-              {filter === "all" ? "All" : filter.charAt(0).toUpperCase() + filter.slice(1)}
-            </button>
-          ))}
+      <div className="border-b border-gray-200 bg-white px-3 py-2 sm:px-5 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex items-center gap-1 overflow-x-auto">
+          {(["all", ...VALID_STATUSES] as const).map((filter) => {
+            const count = filter === "all" ? jobs.length : jobs.filter((j) => j.status === filter).length;
+            const isActive = activeFilter === filter;
+            return (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+                  filter === "all" ? "hidden md:inline-flex" : "inline-flex"
+                } ${
+                  isActive
+                    ? "bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300"
+                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                {filter === "all" ? "All" : filter.charAt(0).toUpperCase() + filter.slice(1)}
+                <span className="text-[10px] font-semibold opacity-60">{count}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -185,77 +255,29 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
 
           if (!newStatus) return;
           const jobId = String(source.id);
-          const job = jobs.find((j) => j.id === jobId);
-          if (!job || job.status === newStatus) return;
-
-          pendingDrags.current.add(jobId);
-
-          requestAnimationFrame(() => {
-            const leavingInterview = job.status === "interview" && newStatus !== "interview";
-            const leavingOffer = job.status === "offer" && newStatus !== "offer";
-            const enteringInterview = newStatus === "interview";
-            const enteringOffer = newStatus === "offer";
-
-            const cleanNotes = (leavingInterview || leavingOffer)
-              ? (job.notes
-                  ? job.notes.replace(/\n?\n?--- (Interview Prep|Offer Details) ---\n[\s\S]*$/, "").trim() || null
-                  : null)
-              : job.notes;
-
-            const cleanedJob: Job = {
-              ...job,
-              status: newStatus!,
-              ...(leavingInterview ? { interview_date: null } : {}),
-              ...(leavingOffer ? { offer_salary: null, offer_deadline: null } : {}),
-              notes: cleanNotes,
-            };
-
-            setJobs((prev) => prev.map((j) => (j.id === jobId ? cleanedJob : j)));
-
-            // Always open modal when entering interview or offer
-            if (enteringInterview || enteringOffer) {
-              originalJobRef.current.set(jobId, job);
-              if (enteringInterview) setInterviewModalJob(cleanedJob);
-              else setOfferModalJob(cleanedJob);
-              return;
-            }
-
-            // Leaving interview/offer → commit cleanup to DB
-            if (leavingInterview || leavingOffer) {
-              startTransition(() => {
-                updateJob(jobId, boardId, {
-                  status: newStatus!,
-                  ...(leavingInterview ? { interview_date: null } : {}),
-                  ...(leavingOffer ? { offer_salary: null, offer_deadline: null } : {}),
-                  notes: cleanNotes,
-                }).finally(() => {
-                  pendingDrags.current.delete(jobId);
-                });
-              });
-              return;
-            }
-
-            // Plain status update
-            startTransition(() => {
-              updateJobStatus(jobId, boardId, newStatus!).finally(() => {
-                pendingDrags.current.delete(jobId);
-              });
-            });
-          });
+          requestAnimationFrame(() => moveJob(jobId, newStatus!));
         }}
       >
-        <div className="flex gap-1 overflow-x-auto overflow-y-auto px-2" style={{ maxHeight: "calc(100vh - 110px)" }}>
-          {KANBAN_COLUMNS.map(({ status, label, dot }) => (
-            <KanbanColumn
-              key={status}
-              status={status}
-              label={label}
-              dotColor={dot}
-              jobs={jobsByStatus[status]}
-              onCardClick={handleCardClick}
-              onAddClick={() => openAddModal(status)}
-            />
-          ))}
+        <div className="flex flex-col gap-1 overflow-y-auto px-2 md:flex-row md:overflow-x-auto" style={{ maxHeight: "calc(100vh - 110px)" }}>
+          {KANBAN_COLUMNS.map(({ status, label, dot }) => {
+            // Mobile: show only active column. Desktop: always show (grid).
+            const mobileVisible = activeFilter === status;
+            return (
+              <div
+                key={status}
+                className={`${mobileVisible ? "flex" : "hidden"} w-full flex-col md:flex md:w-auto md:flex-1`}
+              >
+                <KanbanColumn
+                  status={status}
+                  label={label}
+                  dotColor={dot}
+                  jobs={jobsByStatus[status]}
+                  onCardClick={handleCardClick}
+                  onAddClick={() => openAddModal(status)}
+                />
+              </div>
+            );
+          })}
         </div>
       </DragDropProvider>
 
@@ -331,6 +353,10 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
           }}
           onDeleted={(deletedId) => {
             setJobs((prev) => prev.filter((j) => j.id !== deletedId));
+            setSelectedJob(null);
+          }}
+          onMove={(jobId, newStatus) => {
+            moveJob(jobId, newStatus);
             setSelectedJob(null);
           }}
         />

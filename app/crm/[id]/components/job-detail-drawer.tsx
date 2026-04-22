@@ -14,9 +14,10 @@ interface JobDetailDrawerProps {
   onClose: () => void;
   onUpdated: (job: Job) => void;
   onDeleted: (jobId: string) => void;
+  onMove: (jobId: string, newStatus: JobStatus) => void;
 }
 
-export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted }: JobDetailDrawerProps) {
+export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, onMove }: JobDetailDrawerProps) {
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -317,6 +318,28 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted }:
                   Salary not specified
                 </span>
               )}
+            </div>
+
+            {/* Quick move — mobile primary, also works on desktop */}
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-zinc-400">Move to</label>
+              <div className="flex gap-1 rounded-lg border border-gray-200 bg-gray-50 p-1 dark:border-zinc-700 dark:bg-zinc-800">
+                {KANBAN_COLUMNS.map(({ status: s, label }) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => onMove(job.id, s)}
+                    disabled={job.status === s}
+                    className={`flex-1 cursor-pointer rounded-md px-2 py-1.5 text-xs font-medium transition-all disabled:cursor-default ${
+                      job.status === s
+                        ? "bg-violet-600 text-white shadow-sm"
+                        : "text-gray-500 hover:bg-white hover:text-gray-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {job.tags && job.tags.length > 0 && (
