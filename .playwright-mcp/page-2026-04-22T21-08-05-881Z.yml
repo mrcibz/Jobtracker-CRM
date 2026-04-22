@@ -1,0 +1,121 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "favicon Job Tracker" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "favicon" [ref=e7]
+          - generic [ref=e8]: Job Tracker
+        - generic [ref=e9]: /
+        - generic [ref=e10]: My Job Search
+        - generic [ref=e11]: 1 offers
+      - generic [ref=e12]:
+        - img [ref=e13]
+        - textbox "Search company, role, skill..." [ref=e16]
+      - button "Add Job" [ref=e18] [cursor=pointer]:
+        - img [ref=e19]
+        - text: Add Job
+    - generic [ref=e22]:
+      - button "All" [ref=e23] [cursor=pointer]
+      - button "Wishlist" [ref=e24] [cursor=pointer]
+      - button "Applied" [ref=e25] [cursor=pointer]
+      - button "Interview" [ref=e26] [cursor=pointer]
+      - button "Offer" [ref=e27] [cursor=pointer]
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - heading "Wishlist" [level=2] [ref=e33]
+            - generic [ref=e34]: "0"
+          - button [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - paragraph [ref=e42]: Drop cards here
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - heading "Applied" [level=2] [ref=e47]
+            - generic [ref=e48]: "0"
+          - button [ref=e49] [cursor=pointer]:
+            - img [ref=e50]
+        - generic [ref=e53]:
+          - img [ref=e54]
+          - paragraph [ref=e56]: Drop cards here
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - heading "Interview" [level=2] [ref=e61]
+            - generic [ref=e62]: "1"
+          - button [ref=e63] [cursor=pointer]:
+            - img [ref=e64]
+        - button "TestCo On-site Test Engineer Salary not specified 4h ago" [ref=e106] [cursor=pointer]:
+          - generic [ref=e68]:
+            - paragraph [ref=e70]: TestCo
+            - generic [ref=e72]:
+              - img [ref=e73]
+              - text: On-site
+          - heading "Test Engineer" [level=3] [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]: Salary not specified
+            - generic [ref=e79]:
+              - img [ref=e80]
+              - text: 4h ago
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - heading "Offer" [level=2] [ref=e87]
+            - generic [ref=e88]: "0"
+          - button [ref=e89] [cursor=pointer]:
+            - img [ref=e90]
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - paragraph [ref=e96]: Drop cards here
+    - generic [ref=e111]:
+      - generic [ref=e112]:
+        - heading "Add New Offer" [level=2] [ref=e113]
+        - button [ref=e114]:
+          - img [ref=e115]
+      - generic [ref=e117]:
+        - generic [ref=e118]:
+          - generic [ref=e119]: Stage
+          - generic [ref=e120]:
+            - button "Wishlist" [ref=e121] [cursor=pointer]
+            - button "Applied" [ref=e122] [cursor=pointer]
+            - button "Interview" [ref=e123] [cursor=pointer]
+            - button "Offer" [ref=e124] [cursor=pointer]
+        - generic [ref=e125]:
+          - generic [ref=e126]: Company
+          - textbox "Company" [active] [ref=e127]:
+            - /placeholder: e.g. Stripe
+        - generic [ref=e128]:
+          - generic [ref=e129]: Job Title
+          - textbox "Job Title" [ref=e130]:
+            - /placeholder: e.g. Senior Frontend Engineer
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: Salary Range
+            - textbox "Salary Range" [ref=e134]:
+              - /placeholder: $100k-$130k
+          - generic [ref=e135]:
+            - generic [ref=e136]: Remote
+            - button "No" [ref=e137] [cursor=pointer]:
+              - img [ref=e138]
+              - text: "No"
+        - generic [ref=e141]:
+          - generic [ref=e142]: Skills / Tags
+          - generic [ref=e143]:
+            - textbox "Skills / Tags" [ref=e144]:
+              - /placeholder: Type and press Enter
+            - button [ref=e145] [cursor=pointer]:
+              - img [ref=e146]
+        - button "More details" [ref=e149] [cursor=pointer]:
+          - img [ref=e150]
+          - text: More details
+        - generic [ref=e152]:
+          - button "Cancel" [ref=e153] [cursor=pointer]
+          - button "Add Offer" [ref=e154] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e102] [cursor=pointer]:
+    - img [ref=e103]
+  - alert [ref=e107]
+  - status [ref=e108]

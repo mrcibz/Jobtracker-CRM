@@ -1,54 +1,94 @@
-<a href="https://github.com/tu-usuario/jobtracker-crm">
+<div align="center">
     <img width="1500" height="400" alt="JobTracker CRM Cover" src="/app/opengraph-image.jpg.png" />
-</a>
+</div>
 
-<br/>   
 <br/>
 
 <div align="center">
-    <strong>The Open Source personal CRM for job hunting using the law of least effort.</strong>
+    <strong>Stop tracking your job hunt in Excel. Seriously.</strong>
     <br />
     <br />
 </div>
 
-<div align="center" class="">
+<div align="center">
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=classic&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=classic&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Vercel Ready](https://img.shields.io/badge/Vercel-Deploy-000000?style=classic&logo=vercel&logoColor=white)](https://vercel.com/)
 
 </div>
+
 <br/>
 
 # 💼 JobTracker CRM
 
-Deploy your own CRM, say goodbye to boring spreadsheets, and manage your job applications in a visual interface that won't drain your will to live.
+**Your job hunt is a pipeline. Treat it like one.**
 
-## What is JobTracker CRM?
+You wouldn't run a sales team from a spreadsheet. So why are you running *your own career* from one? JobTracker CRM turns 40 scattered job applications into a visual Kanban board you'll actually open — drag, drop, done.
 
-Job hunting is exhausting enough without having to fight an endless Excel spreadsheet. **JobTracker CRM** was born from a very simple need: to make the hiring process less tedious.
+<br/>
 
-It's a self-hosted web application. Zero complex integrations, zero 20-field forms. Just a clean, visual board to save the roles you like, move them across stages, and jot down only what actually matters.
+<div align="center">
+    <img src="/public/screenshots/kanban-board.png" alt="JobTracker CRM Kanban Board" width="100%" />
+</div>
 
-| Tool | Stress Level | Friction when adding jobs |
-|------|-------------|-----------------|
-| `Excel / Sheets` | 🤯 High (Infinite cells, visually poor) | High (Copy and paste into columns) |
-| `JobTracker CRM` | 🧘‍♂️ Zero (Drag and drop) | Minimal (Just paste the link and name) |
+<br/>
 
-**This repository provides everything you need** to set up your own environment in minutes.
+## Why not just use Excel?
 
+| | Excel / Sheets | JobTracker CRM |
+|---|---|---|
+| **Add a job** | Copy, paste, format, curse | Click `+`, 3 fields, done |
+| **Update status** | Click cell, scroll, type | Drag card. That's it. |
+| **See where you stand** | Squint at columns | Kanban board, one glance |
+| **Visual stress level** | 🤯 Grid of 847 cells | 🧘 Four columns |
+| **Morale after 2 weeks** | Uninstalled | Still using it |
 
-## Support the project ❤️
+Excel was built for accountants. Your job search isn't bookkeeping — it's a pipeline. JobTracker CRM is the pipeline.
 
-Has this tool saved your life (or your patience)? 
-[Buy me a coffee](https://github.com/sponsors/tu-usuario) — or simply give the repo a star ⭐️.
+<br/>
 
-## Design Philosophy (Zero-Hassle Edition)
+## The Zero-Friction Flow
 
-### Key Features
+**No sign-ups. No passwords. No onboarding.** One click spawns a private board with a unique URL — save the link, that's your login.
 
-- [**Kanban Board**](#) - Main view. Visual columns (Wishlist, Applied, Interview, Offer). Drag and drop to update your status instantly.
-- [**Minimalist Forms**](#) - We only ask for the essentials: Company, Role, and Job URL. Details are only filled in if the process moves forward.
-- [**Company Directory**](#) - Automatic cards with HR details so you always know who to ask for if you have to call.
-- [**"Chill" UI Mode**](#) - Clean interface, friendly colors, lots of whitespace, and free of overwhelming metrics.
-- [**100% Your Data**](#) - By using your own Supabase instance, your job search data is private and belongs strictly to you.
+<div align="center">
+    <img src="/public/screenshots/landing.png" alt="Landing page" width="100%" />
+</div>
+
+<br/>
+
+### Four stages, zero clutter
+
+Each card shows only what matters *for that stage*:
+
+- **Wishlist** → Company, role, salary range you're hoping for
+- **Applied** → Days since applied + outcome badge (Pending / Rejected)
+- **Interview** → Next interview date front and center
+- **Offer** → Final salary + deadline, so you can actually compare
+
+<div align="center">
+    <img src="/public/screenshots/detail-drawer.png" alt="Detail drawer" width="100%" />
+</div>
+
+<br/>
+
+### Quick-add in 3 fields
+
+Company, role, salary. Everything else is optional. Fill in HR contact, notes, skills *only if* the process moves forward.
+
+<div align="center">
+    <img src="/public/screenshots/add-modal.png" alt="Add job modal" width="100%" />
+</div>
+
+<br/>
+
+## Key Features
+
+- 🎯 **Kanban Board** — Wishlist → Applied → Interview → Offer. Drag and drop to change status.
+- ⚡ **Zero-friction add** — 3 required fields. No 20-field form nonsense.
+- 🎭 **Smart cards** — Each column shows only the info relevant to that stage.
+- 📅 **Interview scheduler** — Moving a card to Interview prompts for date + prep notes.
+- 🏆 **Offer tracker** — Final salary, deadline, compare side-by-side.
+- 🔒 **100% your data** — Your own Supabase instance. No SaaS, no vendor lock-in.
+- 🌑 **Dark mode** — Obviously.

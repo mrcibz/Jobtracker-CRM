@@ -1,0 +1,206 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "favicon Job Tracker" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - img "favicon" [ref=e7]
+          - generic [ref=e8]: Job Tracker
+        - generic [ref=e9]: /
+        - generic [ref=e10]: My Job Search
+        - generic [ref=e11]: 6 offers
+      - generic [ref=e12]:
+        - img [ref=e13]
+        - textbox "Search company, role, skill..." [ref=e16]
+      - button "Add Job" [ref=e18] [cursor=pointer]:
+        - img [ref=e19]
+        - text: Add Job
+    - generic [ref=e22]:
+      - button "All" [ref=e23] [cursor=pointer]
+      - button "Wishlist" [ref=e24] [cursor=pointer]
+      - button "Applied" [ref=e25] [cursor=pointer]
+      - button "Interview" [ref=e26] [cursor=pointer]
+      - button "Offer" [ref=e27] [cursor=pointer]
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - heading "Wishlist" [level=2] [ref=e33]
+            - generic [ref=e34]: "2"
+          - button [ref=e35] [cursor=pointer]:
+            - img [ref=e36]
+        - generic [ref=e38]:
+          - button "STRIPE Remote Senior Frontend Engineer React TypeScript $ $140k-$180k Just now" [ref=e207] [cursor=pointer]:
+            - generic [ref=e40]:
+              - paragraph [ref=e42]: STRIPE
+              - generic [ref=e44]:
+                - img [ref=e45]
+                - text: Remote
+            - heading "Senior Frontend Engineer" [level=3] [ref=e48]
+            - generic [ref=e49]:
+              - generic [ref=e50]: React
+              - generic [ref=e51]: TypeScript
+            - generic [ref=e52]:
+              - generic [ref=e53]: $ $140k-$180k
+              - generic [ref=e55]:
+                - img [ref=e56]
+                - text: Just now
+          - button "VERCEL Remote Platform Engineer Next.js Go $ $150k-$200k Just now" [ref=e208] [cursor=pointer]:
+            - generic [ref=e60]:
+              - paragraph [ref=e62]: VERCEL
+              - generic [ref=e64]:
+                - img [ref=e65]
+                - text: Remote
+            - heading "Platform Engineer" [level=3] [ref=e68]
+            - generic [ref=e69]:
+              - generic [ref=e70]: Next.js
+              - generic [ref=e71]: Go
+            - generic [ref=e72]:
+              - generic [ref=e73]: $ $150k-$200k
+              - generic [ref=e75]:
+                - img [ref=e76]
+                - text: Just now
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - heading "Applied" [level=2] [ref=e83]
+            - generic [ref=e84]: "2"
+          - button [ref=e85] [cursor=pointer]:
+            - img [ref=e86]
+        - generic [ref=e88]:
+          - button "LINEAR pending Remote Product Designer Figma Design $ $120k-$160k Just now" [ref=e209] [cursor=pointer]:
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - paragraph [ref=e92]: LINEAR
+                - generic [ref=e93]: pending
+              - generic [ref=e95]:
+                - img [ref=e96]
+                - text: Remote
+            - heading "Product Designer" [level=3] [ref=e99]
+            - generic [ref=e100]:
+              - generic [ref=e101]: Figma
+              - generic [ref=e102]: Design
+            - generic [ref=e103]:
+              - generic [ref=e104]: $ $120k-$160k
+              - generic [ref=e106]:
+                - img [ref=e107]
+                - text: Just now
+          - button "NOTION pending Remote Full Stack Developer React Rust $ $130k-$170k Just now" [ref=e210] [cursor=pointer]:
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - paragraph [ref=e113]: NOTION
+                - generic [ref=e114]: pending
+              - generic [ref=e116]:
+                - img [ref=e117]
+                - text: Remote
+            - heading "Full Stack Developer" [level=3] [ref=e120]
+            - generic [ref=e121]:
+              - generic [ref=e122]: React
+              - generic [ref=e123]: Rust
+            - generic [ref=e124]:
+              - generic [ref=e125]: $ $130k-$170k
+              - generic [ref=e127]:
+                - img [ref=e128]
+                - text: Just now
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - heading "Interview" [level=2] [ref=e135]
+            - generic [ref=e136]: "1"
+          - button [ref=e137] [cursor=pointer]:
+            - img [ref=e138]
+        - button "FIGMA 25 abr, 23:09 Remote Frontend Engineer TypeScript Canvas $ $145k-$185k Just now" [ref=e211] [cursor=pointer]:
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - paragraph [ref=e144]: FIGMA
+              - generic [ref=e145]:
+                - img [ref=e146]
+                - text: 25 abr, 23:09
+            - generic [ref=e149]:
+              - img [ref=e150]
+              - text: Remote
+          - heading "Frontend Engineer" [level=3] [ref=e153]
+          - generic [ref=e154]:
+            - generic [ref=e155]: TypeScript
+            - generic [ref=e156]: Canvas
+          - generic [ref=e157]:
+            - generic [ref=e158]: $ $145k-$185k
+            - generic [ref=e160]:
+              - img [ref=e161]
+              - text: Just now
+      - generic [ref=e164]:
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - heading "Offer" [level=2] [ref=e168]
+            - generic [ref=e169]: "1"
+          - button [ref=e170] [cursor=pointer]:
+            - img [ref=e171]
+        - button "SUPABASE SECURED 🎉 Remote Developer Advocate DevRel OSS $ $125k By 12 may Just now" [ref=e212] [cursor=pointer]:
+          - generic [ref=e175]:
+            - generic [ref=e176]:
+              - paragraph [ref=e177]: SUPABASE
+              - generic [ref=e178]: SECURED 🎉
+            - generic [ref=e180]:
+              - img [ref=e181]
+              - text: Remote
+          - heading "Developer Advocate" [level=3] [ref=e184]
+          - generic [ref=e185]:
+            - generic [ref=e186]: DevRel
+            - generic [ref=e187]: OSS
+          - generic [ref=e188]:
+            - generic [ref=e189]: $ $125k
+            - generic [ref=e190]:
+              - generic [ref=e191]:
+                - img [ref=e192]
+                - text: By 12 may
+              - generic [ref=e194]:
+                - img [ref=e195]
+                - text: Just now
+    - generic [ref=e278]:
+      - generic [ref=e279]:
+        - heading "Add New Offer" [level=2] [ref=e280]
+        - button [ref=e281]:
+          - img [ref=e282]
+      - generic [ref=e284]:
+        - generic [ref=e285]:
+          - generic [ref=e286]: Stage
+          - generic [ref=e287]:
+            - button "Wishlist" [ref=e288] [cursor=pointer]
+            - button "Applied" [ref=e289] [cursor=pointer]
+            - button "Interview" [ref=e290] [cursor=pointer]
+            - button "Offer" [ref=e291] [cursor=pointer]
+        - generic [ref=e292]:
+          - generic [ref=e293]: Company
+          - textbox "Company" [active] [ref=e294]:
+            - /placeholder: e.g. Stripe
+        - generic [ref=e295]:
+          - generic [ref=e296]: Job Title
+          - textbox "Job Title" [ref=e297]:
+            - /placeholder: e.g. Senior Frontend Engineer
+        - generic [ref=e298]:
+          - generic [ref=e299]:
+            - generic [ref=e300]: Salary Range
+            - textbox "Salary Range" [ref=e301]:
+              - /placeholder: $100k-$130k
+          - generic [ref=e302]:
+            - generic [ref=e303]: Remote
+            - button "No" [ref=e304] [cursor=pointer]:
+              - img [ref=e305]
+              - text: "No"
+        - generic [ref=e308]:
+          - generic [ref=e309]: Skills / Tags
+          - generic [ref=e310]:
+            - textbox "Skills / Tags" [ref=e311]:
+              - /placeholder: Type and press Enter
+            - button [ref=e312] [cursor=pointer]:
+              - img [ref=e313]
+        - button "More details" [ref=e316] [cursor=pointer]:
+          - img [ref=e317]
+          - text: More details
+        - generic [ref=e319]:
+          - button "Cancel" [ref=e320] [cursor=pointer]
+          - button "Add Offer" [ref=e321] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e203] [cursor=pointer]:
+    - img [ref=e204]
+  - alert [ref=e213]
+  - status [ref=e214]
