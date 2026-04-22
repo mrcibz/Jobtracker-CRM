@@ -58,7 +58,7 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_50%_at_50%_0%,theme(colors.emerald.200/.55),transparent_70%),radial-gradient(50%_40%_at_100%_100%,theme(colors.sky.200/.45),transparent_70%)] dark:[background:radial-gradient(60%_50%_at_50%_0%,theme(colors.emerald.500/.15),transparent_70%),radial-gradient(50%_40%_at_100%_100%,theme(colors.sky.500/.12),transparent_70%)]"
       />
 
-      <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 animate-fade-in-down animate-duration-slow sm:px-10">
+      <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-5 animate-fade-in-down animate-duration-slow sm:px-10 sm:py-6">
         <div className="flex items-center gap-2.5">
           <Logo className="h-7 w-7" />
           <Wordmark />
@@ -73,12 +73,13 @@ export default function Home() {
           <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-zinc-50 transition-transform group-hover:rotate-[-6deg] dark:bg-zinc-50 dark:text-zinc-900">
             <GithubMark className="h-3 w-3" />
           </span>
-          <span>⭐ on GitHub</span>
+          <span className="hidden sm:inline">⭐ on GitHub</span>
+          <span className="sm:hidden">Star</span>
           <span aria-hidden className="text-zinc-400 transition-transform group-hover:translate-x-0.5 dark:text-zinc-500">→</span>
         </a>
       </header>
 
-      <main className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-10 px-6 py-12 text-center sm:px-10">
+      <main className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-8 px-4 py-10 text-center sm:gap-10 sm:px-10 sm:py-12">
         <div className="flex flex-col items-center gap-4">
           <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-medium text-zinc-600 backdrop-blur animate-fade-in-up animate-duration-slow dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-400">
             <span className="relative flex h-1.5 w-1.5">
@@ -87,7 +88,7 @@ export default function Home() {
             </span>
             Manage your job hunt
           </span>
-          <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight animate-fade-in-up animate-delay-100 animate-duration-slow sm:text-6xl">
+          <h1 className="text-balance text-3xl font-semibold leading-tight tracking-tight animate-fade-in-up animate-delay-100 animate-duration-slow sm:text-6xl">
             Your job-hunt CRM.
             <br />
             <span className="text-zinc-500 dark:text-zinc-400">One link. No accounts.</span>
@@ -117,7 +118,7 @@ export default function Home() {
       </main>
 
       <footer className="relative z-10 border-t border-zinc-200/60 dark:border-zinc-800/60">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-6 py-5 text-xs text-zinc-500 sm:flex-row sm:px-10 dark:text-zinc-500">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-zinc-500 sm:flex-row sm:px-10 dark:text-zinc-500">
           <span className="font-medium text-zinc-600 dark:text-zinc-400">
             Built to land interviews.
           </span>
