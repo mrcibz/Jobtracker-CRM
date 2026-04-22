@@ -19,9 +19,8 @@ function Logo({ className = "" }: { className?: string }) {
 function Wordmark() {
   return (
     <span className="flex items-baseline text-[15px] font-semibold tracking-tight">
-      <span className="text-zinc-900 dark:text-zinc-50">job</span>
-      <span className="text-zinc-400 dark:text-zinc-500">/</span>
-      <span className="text-zinc-900 dark:text-zinc-50">tracker</span>
+      <span className="text-zinc-900 dark:text-zinc-50">Job</span>
+      <span className="text-zinc-900 dark:text-zinc-50">Tracker</span>
       <span className="ml-1 rounded-sm bg-zinc-100 px-1 py-0.5 text-[9px] font-medium uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
         crm
       </span>
@@ -72,7 +71,7 @@ export default function Home() {
           <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-zinc-50 transition-transform group-hover:rotate-[-6deg] dark:bg-zinc-50 dark:text-zinc-900">
             <GithubMark className="h-3 w-3" />
           </span>
-          <span>Star on GitHub</span>
+          <span>⭐ on GitHub</span>
           <span aria-hidden className="text-zinc-400 transition-transform group-hover:translate-x-0.5 dark:text-zinc-500">→</span>
         </a>
       </header>
@@ -80,7 +79,10 @@ export default function Home() {
       <main className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-10 px-6 py-12 text-center sm:px-10">
         <div className="flex flex-col items-center gap-4">
           <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-xs font-medium text-zinc-600 backdrop-blur animate-fade-in-up animate-duration-slow dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-400">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            </span>
             Manage your job hunt
           </span>
           <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight animate-fade-in-up animate-delay-100 animate-duration-slow sm:text-6xl">
@@ -97,7 +99,7 @@ export default function Home() {
         <div className="grid w-full gap-4 animate-fade-in-up animate-delay-300 animate-duration-slow sm:grid-cols-2">
           <button
             type="button"
-            className="group flex h-40 flex-col items-start justify-between rounded-2xl border border-zinc-900 bg-zinc-900 p-6 text-left text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
+            className="group flex h-40 flex-col items-start justify-between rounded-2xl border border-zinc-900 bg-zinc-900 p-6 text-left text-white shadow-sm ring-0 ring-emerald-500/0 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:ring-4 hover:ring-emerald-500/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/40 dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:ring-emerald-400/30 dark:focus-visible:ring-emerald-400/50"
           >
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-xl dark:bg-zinc-900/10">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -115,17 +117,24 @@ export default function Home() {
             </div>
           </button>
 
-          <div className="flex h-40 flex-col items-start justify-between rounded-2xl border border-zinc-200 bg-white p-6 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M15 3h4a2 2 0 0 1 2 2v4" />
-                <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
-                <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
-                <path d="M3 9V5a2 2 0 0 1 2-2h4" />
-                <path d="M8 12h8" />
-              </svg>
-            </span>
-            <div className="flex w-full items-stretch gap-2">
+          <div className="flex h-40 flex-col items-start justify-between rounded-2xl border border-zinc-200 bg-white p-6 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M4 9h16" />
+                  <path d="M4 15h16" />
+                  <path d="M10 3 8 21" />
+                  <path d="M16 3l-2 18" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-lg font-semibold leading-tight">Open existing board</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  Paste your board ID to resume
+                </p>
+              </div>
+            </div>
+            <div className="flex w-full items-stretch gap-2.5">
               <label className="sr-only" htmlFor="board-id">Board ID</label>
               <input
                 id="board-id"
@@ -133,27 +142,28 @@ export default function Home() {
                 placeholder="Enter your ID"
                 autoComplete="off"
                 spellCheck={false}
-                className="h-11 flex-1 rounded-full border border-zinc-200 bg-white px-4 font-mono text-sm tracking-tight outline-none transition-colors placeholder:text-zinc-400 focus:border-zinc-900 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-500 dark:focus:border-zinc-50"
+                className="h-11 min-w-0 flex-1 rounded-full border border-zinc-200 bg-white px-4 font-mono text-sm tracking-tight outline-none transition-all placeholder:text-zinc-400 hover:border-zinc-300 focus:border-zinc-900 focus:ring-4 focus:ring-zinc-900/10 dark:border-zinc-700 dark:bg-zinc-950 dark:placeholder:text-zinc-500 dark:hover:border-zinc-600 dark:focus:border-zinc-50 dark:focus:ring-zinc-50/10"
               />
               <button
                 type="button"
-                className="inline-flex h-11 items-center justify-center rounded-full bg-zinc-900 px-5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-300"
+                className="group/btn inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-full bg-zinc-900 px-6 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-zinc-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-zinc-900/30 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus-visible:ring-zinc-50/30"
               >
                 Enter
+                <span aria-hidden className="transition-transform group-hover/btn:translate-x-0.5">→</span>
               </button>
             </div>
           </div>
         </div>
 
-        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-zinc-500 animate-fade-in-up animate-delay-500 animate-duration-slow dark:text-zinc-500">
+        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-zinc-600 animate-fade-in-up animate-delay-500 animate-duration-slow dark:text-zinc-400">
           <li className="flex items-center gap-1.5">
-            <span className="h-1 w-1 rounded-full bg-emerald-500" /> No passwords
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_3px_theme(colors.emerald.500/.15)]" /> No passwords
           </li>
           <li className="flex items-center gap-1.5">
-            <span className="h-1 w-1 rounded-full bg-sky-500" /> Save the link, it&apos;s yours
+            <span className="h-1.5 w-1.5 rounded-full bg-sky-500 shadow-[0_0_0_3px_theme(colors.sky.500/.15)]" /> Save the link, it&apos;s yours
           </li>
           <li className="flex items-center gap-1.5">
-            <span className="h-1 w-1 rounded-full bg-amber-500" /> Minimal Kanban
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_0_3px_theme(colors.amber.500/.15)]" /> Minimal Kanban
           </li>
         </ul>
       </main>

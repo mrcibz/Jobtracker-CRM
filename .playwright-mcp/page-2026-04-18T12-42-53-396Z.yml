@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e10]:
+          - generic [ref=e11]: job
+          - generic [ref=e12]: /
+          - generic [ref=e13]: tracker
+          - generic [ref=e14]: crm
+      - link "Open repository on GitHub" [ref=e15] [cursor=pointer]:
+        - /url: https://github.com/mrcibz/Jobtracker-CRM
+        - img [ref=e17]
+        - generic [ref=e19]: ⭐ on GitHub
+        - generic [ref=e20]: →
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]: Manage your job hunt
+        - heading "Your job-hunt CRM. One link. No accounts." [level=1] [ref=e27]:
+          - text: Your job-hunt CRM.
+          - text: One link. No accounts.
+        - paragraph [ref=e28]: Spin up a new board instantly or jump back into yours with an ID. Built to track your job applications.
+      - generic [ref=e29]:
+        - button "Create a board Generate a unique ID and start now" [ref=e30]:
+          - img [ref=e32]
+          - generic [ref=e34]:
+            - generic [ref=e35]:
+              - paragraph [ref=e36]: Create a board
+              - paragraph [ref=e37]: Generate a unique ID and start now
+            - generic [ref=e38]: →
+        - generic [ref=e39]:
+          - img [ref=e41]
+          - generic [ref=e44]:
+            - generic [ref=e45]: Board ID
+            - textbox "Board ID" [ref=e46]:
+              - /placeholder: Enter your ID
+            - button "Enter" [ref=e47]:
+              - text: Enter
+              - generic [ref=e48]: →
+      - list [ref=e49]:
+        - listitem [ref=e50]: No passwords
+        - listitem [ref=e52]: Save the link, it's yours
+        - listitem [ref=e54]: Minimal Kanban
+    - contentinfo [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]: Built to land interviews.
+        - generic [ref=e59]:
+          - generic [ref=e60]: © 2026 JobTracker CRM
+          - img [ref=e61]
+  - button "Open Next.js Dev Tools" [ref=e67] [cursor=pointer]:
+    - img [ref=e68]
+  - alert [ref=e71]
