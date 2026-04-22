@@ -42,23 +42,37 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
           : "shadow-sm transition-all"
       }`}
     >
-      {/* Top row: company + remote/on-site badge */}
+      {/* Top row: company + remote/on-site badge + favicon */}
       <div className="flex items-center justify-between">
         <div className="flex flex-1 items-center gap-2 overflow-hidden mr-2">
-          <p className="truncate text-[11px] font-medium uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+          <p className="truncate text-[11px] font-medium uppercase tracking-wider text-gray-400 dark:text-zinc-500">
             {job.company_name}
           </p>
-          {job.status === "applied" && (
-            <span className={`shrink-0 rounded-[4px] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
-              job.application_outcome === "accepted"
-                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400"
-                : job.application_outcome === "rejected"
-                ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400"
-                : "bg-gray-100 text-gray-600 dark:bg-zinc-700 dark:text-zinc-300"
-            }`}>
-              {job.application_outcome}
-            </span>
-          )}
+          <span className={`shrink-0 rounded-[4px] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
+            job.status !== "applied" ? "hidden" :
+            job.application_outcome === "accepted"
+              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400"
+              : job.application_outcome === "rejected"
+              ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400"
+              : "bg-gray-100 text-gray-600 dark:bg-zinc-700 dark:text-zinc-300"
+          }`}>
+            {job.application_outcome}
+          </span>
+          <span className={`shrink-0 items-center gap-1 rounded-[4px] bg-violet-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-violet-700 dark:bg-violet-500/20 dark:text-violet-400 ${
+            job.status === "interview" && job.interview_date ? "flex" : "hidden"
+          }`}>
+            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+            {job.interview_date
+              ? new Date(job.interview_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+              : ""}
+          </span>
+          <span className={`shrink-0 items-center gap-1 rounded-[4px] bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-700 dark:bg-amber-500/20 dark:text-amber-400 ${
+            job.status === "offer" ? "flex" : "hidden"
+          }`}>
+            SECURED 🎉
+          </span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {job.is_remote ? (
@@ -85,6 +99,17 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
         {job.job_title}
       </h3>
 
+      {/* Location */}
+      {job.location && (
+        <p className="mt-1 flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
+          <svg viewBox="0 0 16 16" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="8" cy="6" r="1.5" />
+          </svg>
+          {job.location}
+        </p>
+      )}
+
       {/* Tags */}
       {job.tags.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-1.5">
@@ -101,7 +126,11 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
 
       {/* Bottom: salary + time ago */}
       <div className="mt-3 flex items-center justify-between">
-        {job.salary_range ? (
+        {job.status === "offer" && job.offer_salary ? (
+          <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700 shadow-sm dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
+            $ {job.offer_salary}
+          </span>
+        ) : job.salary_range ? (
           <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400">
             $ {job.salary_range}
           </span>
@@ -110,13 +139,24 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
             Salary not specified
           </span>
         )}
-        <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
-          <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="8" cy="8" r="6" />
-            <path d="M8 5v3l2 2" strokeLinecap="round" />
-          </svg>
-          {timeAgo(job.created_at)}
-        </span>
+        
+        <div className="flex items-center gap-2 text-[11px] text-gray-400 dark:text-zinc-500">
+          {job.status === "offer" && job.offer_deadline && (
+            <span className="flex items-center gap-1 font-medium text-orange-600 dark:text-orange-400">
+              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              By {new Date(job.offer_deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+            </span>
+          )}
+          <span className="flex items-center gap-1">
+            <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="8" cy="8" r="6" />
+              <path d="M8 5v3l2 2" strokeLinecap="round" />
+            </svg>
+            {timeAgo(job.created_at)}
+          </span>
+        </div>
       </div>
     </div>
   );

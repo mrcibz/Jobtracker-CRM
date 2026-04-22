@@ -7,6 +7,8 @@ import type { Job, JobStatus } from "@/lib/types";
 import { KANBAN_COLUMNS } from "@/lib/types";
 import { KanbanColumn } from "./kanban-column";
 import { AddOfferModal } from "./add-offer-modal";
+import { ScheduleInterviewModal } from "./schedule-interview-modal";
+import { OfferModal } from "./offer-modal";
 import { createJob, updateJobStatus, updateJob } from "../actions";
 import { JobDetailDrawer } from "./job-detail-drawer";
 
@@ -20,6 +22,8 @@ interface KanbanBoardProps {
 export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [interviewModalJob, setInterviewModalJob] = useState<Job | null>(null);
+  const [offerModalJob, setOfferModalJob] = useState<Job | null>(null);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [activeFilter, setActiveFilter] = useState<"all" | JobStatus>("all");
   const [search, setSearch] = useState("");
@@ -79,6 +83,7 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
         notes: null,
         salary_range: (formData.get("salary_range") as string) || null,
         next_action_date: null,
+        interview_date: null,
         tags,
         is_remote: formData.get("is_remote") === "true",
         created_at: new Date().toISOString(),
@@ -181,10 +186,59 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
           if (!job || job.status === newStatus) return;
 
           pendingDrags.current.add(jobId);
+
           requestAnimationFrame(() => {
+            const leavingInterview = job.status === "interview" && newStatus !== "interview";
+            const leavingOffer = job.status === "offer" && newStatus !== "offer";
+
+            if (leavingInterview || leavingOffer) {
+              const cleanNotes = job.notes
+                ? job.notes.replace(/\n?\n?--- (Interview Prep|Offer Details) ---\n[\s\S]*$/, "").trim() || null
+                : null;
+
+              setJobs((prev) =>
+                prev.map((j) =>
+                  j.id === jobId
+                    ? { 
+                        ...j, 
+                        status: newStatus!, 
+                        ...(leavingInterview ? { interview_date: null } : {}),
+                        ...(leavingOffer ? { offer_salary: null, offer_deadline: null } : {}),
+                        notes: cleanNotes 
+                      }
+                    : j
+                )
+              );
+
+              startTransition(() => {
+                updateJob(jobId, boardId, {
+                  status: newStatus!,
+                  ...(leavingInterview ? { interview_date: null } : {}),
+                  ...(leavingOffer ? { offer_salary: null, offer_deadline: null } : {}),
+                  notes: cleanNotes,
+                }).finally(() => {
+                  pendingDrags.current.delete(jobId);
+                });
+              });
+              return;
+            }
+
             setJobs((prev) =>
               prev.map((j) => (j.id === jobId ? { ...j, status: newStatus! } : j))
             );
+
+            // Intercept interview moves
+            if (newStatus === "interview") {
+              setInterviewModalJob(job);
+              return;
+            }
+
+            // Intercept offer moves
+            if (newStatus === "offer") {
+              setOfferModalJob(job);
+              return;
+            }
+
             startTransition(() => {
               updateJobStatus(jobId, boardId, newStatus!).finally(() => {
                 pendingDrags.current.delete(jobId);
@@ -212,6 +266,52 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
         open={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         onAdd={handleAdd}
+      />
+
+      <ScheduleInterviewModal
+        open={!!interviewModalJob}
+        job={interviewModalJob}
+        onClose={() => {
+          if (!interviewModalJob) return;
+          // Cancel: Revert optimistic status update
+          const origStatus = interviewModalJob.status;
+          setJobs((prev) => prev.map((j) => (j.id === interviewModalJob.id ? { ...j, status: origStatus } : j)));
+          pendingDrags.current.delete(interviewModalJob.id);
+          setInterviewModalJob(null);
+        }}
+        onSave={(jobId, interviewDate, updatedNotes) => {
+          // Save: apply DB update and update local UI
+          updateJob(jobId, boardId, { status: "interview", interview_date: interviewDate, notes: updatedNotes }).finally(() => {
+            pendingDrags.current.delete(jobId);
+          });
+          setJobs((prev) =>
+            prev.map((j) => (j.id === jobId ? { ...j, interview_date: interviewDate, notes: updatedNotes, status: "interview" } : j))
+          );
+          setInterviewModalJob(null);
+        }}
+      />
+
+      <OfferModal
+        open={!!offerModalJob}
+        job={offerModalJob}
+        onClose={() => {
+          if (!offerModalJob) return;
+          // Cancel: Revert optimistic status update
+          const origStatus = offerModalJob.status;
+          setJobs((prev) => prev.map((j) => (j.id === offerModalJob.id ? { ...j, status: origStatus } : j)));
+          pendingDrags.current.delete(offerModalJob.id);
+          setOfferModalJob(null);
+        }}
+        onSave={(jobId, offerSalary, offerDeadline, updatedNotes) => {
+          // Save: apply DB update and update local UI
+          updateJob(jobId, boardId, { status: "offer", offer_salary: offerSalary, offer_deadline: offerDeadline, notes: updatedNotes }).finally(() => {
+            pendingDrags.current.delete(jobId);
+          });
+          setJobs((prev) =>
+            prev.map((j) => (j.id === jobId ? { ...j, offer_salary: offerSalary, offer_deadline: offerDeadline, notes: updatedNotes, status: "offer" } : j))
+          );
+          setOfferModalJob(null);
+        }}
       />
 
       {/* ─── Detail drawer ─── */}

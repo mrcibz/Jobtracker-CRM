@@ -17,6 +17,11 @@
     "supabase": "^2.92.1",
     "tailwind-animations": "^1.0.1"
   },
+  "pnpm": {
+    "patchedDependencies": {
+      "@dnd-kit/react@0.4.1-beta-20260419222523": "patches/@dnd-kit__react@0.4.1-beta-20260419222523.patch"
+    }
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

@@ -4,3 +4,6 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - supabase
+
+patchedDependencies:
+  '@dnd-kit/react@0.4.1-beta-20260419222523': patches/@dnd-kit__react@0.4.1-beta-20260419222523.patch

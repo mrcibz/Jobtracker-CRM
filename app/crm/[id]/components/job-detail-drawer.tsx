@@ -29,6 +29,9 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
   const [contactPhone, setContactPhone] = useState(job.contact_phone ?? "");
   const [notes, setNotes] = useState(job.notes ?? "");
   const [location, setLocation] = useState(job.location ?? "");
+  const [interviewDate, setInterviewDate] = useState(job.interview_date ? new Date(job.interview_date).toISOString().slice(0, 16) : "");
+  const [offerSalary, setOfferSalary] = useState(job.offer_salary ?? "");
+  const [offerDeadline, setOfferDeadline] = useState(job.offer_deadline ? new Date(job.offer_deadline).toISOString().split('T')[0] : "");
 
   function handleSave() {
     startTransition(async () => {
@@ -37,11 +40,14 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
         company_name: companyName,
         job_title: jobTitle,
         salary_range: salaryRange || null,
+        offer_salary: offerSalary || null,
         is_remote: isRemote,
         contact_email: contactEmail || null,
         contact_phone: contactPhone || null,
         notes: notes || null,
         location: location || null,
+        interview_date: interviewDate ? new Date(interviewDate).toISOString() : null,
+        offer_deadline: offerDeadline ? new Date(offerDeadline).toISOString() : null,
       };
       await updateJob(job.id, boardId, fields);
       onUpdated({ ...job, ...fields });
@@ -146,10 +152,16 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
               </div>
             </div>
 
-            {/* Location */}
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-zinc-400">Location</label>
-              <input value={location} onChange={(e) => setLocation(e.target.value)} className={inputClass} placeholder="New York, NY" />
+            {/* Location + Interview Date */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-zinc-400">Location</label>
+                <input value={location} onChange={(e) => setLocation(e.target.value)} className={inputClass} placeholder="New York, NY" />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-zinc-400">Interview Date</label>
+                <input type="datetime-local" value={interviewDate} onChange={(e) => setInterviewDate(e.target.value)} className={inputClass} />
+              </div>
             </div>
 
             {/* Contact */}
@@ -163,6 +175,20 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
                 <input type="tel" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className={inputClass} placeholder="+34 600..." />
               </div>
             </div>
+
+            {/* Offer Details */}
+            {(status === "offer" || offerSalary || offerDeadline) && (
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-emerald-600 dark:text-emerald-500">Offer Salary</label>
+                  <input type="text" value={offerSalary} onChange={(e) => setOfferSalary(e.target.value)} className={inputClass} placeholder="$140k + equity" />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-orange-600 dark:text-orange-500">Decision Deadline</label>
+                  <input type="date" value={offerDeadline} onChange={(e) => setOfferDeadline(e.target.value)} className={inputClass} />
+                </div>
+              </div>
+            )}
 
             {/* Notes */}
             <div>
@@ -259,7 +285,11 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
                   On-site
                 </span>
               )}
-              {job.salary_range ? (
+              {job.status === "offer" && job.offer_salary ? (
+                <span className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 shadow-sm dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
+                  $ {job.offer_salary}
+                </span>
+              ) : job.salary_range ? (
                 <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400">
                   $ {job.salary_range}
                 </span>
@@ -351,6 +381,22 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
                       <span className="text-gray-500">Last updated:</span>
                       <span>{new Date(job.updated_at).toLocaleDateString()}</span>
                     </div>
+                    {job.offer_deadline && (
+                      <div className="flex justify-between border-b border-gray-100 pb-1 dark:border-zinc-800">
+                        <span className="font-medium text-orange-600 dark:text-orange-500">Offer Deadline:</span>
+                        <span className="font-medium text-orange-600 dark:text-orange-500">
+                          {new Date(job.offer_deadline).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+                    {job.interview_date && (
+                      <div className="flex justify-between border-b border-gray-100 pb-1 dark:border-zinc-800">
+                        <span className="font-medium text-violet-600 dark:text-violet-400">Interview:</span>
+                        <span className="font-medium text-violet-600 dark:text-violet-400">
+                          {new Date(job.interview_date).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex justify-between">
                       <span className="text-gray-500">Next action:</span>
                       <span className={job.next_action_date ? "font-medium text-violet-600 dark:text-violet-400" : "italic text-gray-400"}>

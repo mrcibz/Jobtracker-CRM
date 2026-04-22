@@ -4,13 +4,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@dnd-kit/react@0.4.1-beta-20260419222523':
+    hash: 5db14b2a43ed845460095d30fd244486bceafb245e12eb52423a892ec8428047
+    path: patches/@dnd-kit__react@0.4.1-beta-20260419222523.patch
+
 importers:
 
   .:
     dependencies:
       '@dnd-kit/react':
         specifier: 0.4.1-beta-20260419222523
-        version: 0.4.1-beta-20260419222523(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 0.4.1-beta-20260419222523(patch_hash=5db14b2a43ed845460095d30fd244486bceafb245e12eb52423a892ec8428047)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@supabase/supabase-js':
         specifier: ^2.104.0
         version: 2.104.0
@@ -2256,7 +2261,7 @@ snapshots:
       '@dnd-kit/state': 0.4.1-beta-20260419222523
       tslib: 2.8.1
 
-  '@dnd-kit/react@0.4.1-beta-20260419222523(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@dnd-kit/react@0.4.1-beta-20260419222523(patch_hash=5db14b2a43ed845460095d30fd244486bceafb245e12eb52423a892ec8428047)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@dnd-kit/abstract': 0.4.1-beta-20260419222523
       '@dnd-kit/dom': 0.4.1-beta-20260419222523

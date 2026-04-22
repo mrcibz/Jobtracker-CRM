@@ -93,7 +93,10 @@ export async function updateJob(
     application_outcome?: ApplicationOutcome;
     notes?: string | null;
     salary_range?: string | null;
+    offer_salary?: string | null;
     next_action_date?: string | null;
+    interview_date?: string | null;
+    offer_deadline?: string | null;
   }
 ) {
   const supabase = getSupabaseServer();
