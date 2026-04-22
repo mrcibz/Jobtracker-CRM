@@ -66,18 +66,23 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
   }
 
   function handleOutcomeChange(newOutcome: ApplicationOutcome) {
+    // Accepted on applied card → auto-promote to interview without opening schedule modal
+    const promoteToInterview = newOutcome === "accepted" && job.status === "applied";
+    const fields = promoteToInterview
+      ? { application_outcome: newOutcome, status: "interview" as JobStatus }
+      : { application_outcome: newOutcome };
+
     startTransition(async () => {
-      await updateJob(job.id, boardId, { application_outcome: newOutcome });
-      // If accepted, the DB trigger will promote it to 'interview'. Let's reflect it locally.
-      const newStatus = newOutcome === "accepted" && job.status !== "interview" ? "interview" : job.status;
-      onUpdated({ ...job, application_outcome: newOutcome, status: newStatus });
+      await updateJob(job.id, boardId, fields);
+      onUpdated({ ...job, ...fields });
+      if (promoteToInterview) onClose();
     });
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-gray-200 bg-white p-6 shadow-2xl sm:rounded-2xl dark:border-zinc-700 dark:bg-zinc-900">
+      <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl sm:p-6 dark:border-zinc-700 dark:bg-zinc-900">
         {/* Header */}
         <div className="mb-5 flex items-start justify-between">
           <div className="min-w-0 flex-1">
@@ -467,9 +472,9 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
 
       {/* Delete confirmation */}
       {confirmDelete && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <div className="absolute inset-0 z-10 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirmDelete(false)} />
-          <div className="relative w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl dark:border-zinc-700 dark:bg-zinc-900">
+          <div className="relative w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl sm:p-6 dark:border-zinc-700 dark:bg-zinc-900">
             <h3 className="mb-2 text-base font-semibold text-gray-900 dark:text-zinc-50">Delete this job?</h3>
             <p className="mb-5 text-sm text-gray-500 dark:text-zinc-400">
               <strong>{job.company_name}</strong> — {job.job_title}. This cannot be undone.
