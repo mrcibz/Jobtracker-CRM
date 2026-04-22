@@ -59,6 +59,9 @@ Click on any card to open the detail drawer (slides up on mobile, side panel on 
 * **Location & Salary:** Remote/Hybrid status and compensation details.
 * **The "Brain Dump":** A large text area for notes. Write down recruiter names, tech stacks, or interview prep thoughts.
 
+### 5. Drag & Drop &  supbase client
+We will use this toolkit called dnd-kit  for drag & drop interfaces. docs(react) --> https://dndkit.com/react/quickstart/
+Supabase client to avoid calling supobase API from server  --> docs: https://supabase.com/docs/reference/javascript/typescript-support
 ## 1-Click Deploy
 
 Deploy your own private instance in seconds. You own the code, the database, and the data.
