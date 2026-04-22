@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="1500" height="400" alt="JobTracker CRM Cover" src="/app/opengraph-image.jpg.png" />
+    <img width="1500" height="400" alt="JobTracker CRM Cover" src="/app/opengraph-image.png" />
 </div>
 
 <br/>
