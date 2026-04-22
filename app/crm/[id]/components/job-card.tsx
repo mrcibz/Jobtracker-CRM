@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import type { Job, JobStatus } from "@/lib/types";
 
@@ -23,7 +24,7 @@ interface JobCardProps {
   onCardClick: (job: Job) => void;
 }
 
-export function JobCard({ job, index, group, onCardClick }: JobCardProps) {
+export const JobCard = memo(function JobCard({ job, index, group, onCardClick }: JobCardProps) {
   const { ref, isDragging } = useSortable({
     id: job.id,
     index,
@@ -35,26 +36,28 @@ export function JobCard({ job, index, group, onCardClick }: JobCardProps) {
     <div
       ref={ref}
       onClick={() => onCardClick(job)}
-      className={`cursor-pointer rounded-xl border border-gray-200 bg-white p-4 transition-all hover:shadow-md dark:border-zinc-700/60 dark:bg-zinc-800/90 dark:hover:border-zinc-600 ${
+      className={`cursor-pointer rounded-xl border border-gray-200 bg-white p-4 hover:shadow-md dark:border-zinc-700/60 dark:bg-zinc-800/90 dark:hover:border-zinc-600 ${
         isDragging
           ? "z-50 rotate-1 scale-[1.02] shadow-xl ring-2 ring-violet-400/40"
-          : "shadow-sm"
+          : "shadow-sm transition-all"
       }`}
     >
-      {/* Top row: company + remote badge */}
+      {/* Top row: company + remote badge + favicon */}
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-medium uppercase tracking-wider text-gray-400 dark:text-zinc-500">
           {job.company_name}
         </p>
-        {job.is_remote && (
-          <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
-            <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <circle cx="8" cy="6" r="4" />
-              <path d="M1.5 14c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" strokeLinecap="round" />
-            </svg>
-            Remote
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {job.is_remote && (
+            <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
+              <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="8" cy="6" r="4" />
+                <path d="M1.5 14c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" strokeLinecap="round" />
+              </svg>
+              Remote
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Job title */}
@@ -95,4 +98,4 @@ export function JobCard({ job, index, group, onCardClick }: JobCardProps) {
       </div>
     </div>
   );
-}
+});

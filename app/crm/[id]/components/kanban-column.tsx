@@ -1,12 +1,13 @@
 "use client";
 
+import { memo } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import type { Job, JobStatus } from "@/lib/types";
 import { JobCard } from "./job-card";
 
 // Per-column empty state icons
 const EMPTY_ICONS: Record<JobStatus, React.ReactNode> = {
-  watchlist: (
+  wishlist: (
     <svg viewBox="0 0 24 24" className="h-8 w-8 text-gray-300 dark:text-zinc-600" fill="none" stroke="currentColor" strokeWidth="1.2">
       <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
@@ -38,7 +39,7 @@ interface KanbanColumnProps {
   onAddClick: () => void;
 }
 
-export function KanbanColumn({
+export const KanbanColumn = memo(function KanbanColumn({
   status,
   label,
   dotColor,
@@ -102,4 +103,13 @@ export function KanbanColumn({
       </div>
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  if (prevProps.status !== nextProps.status) return false;
+  if (prevProps.label !== nextProps.label) return false;
+  if (prevProps.dotColor !== nextProps.dotColor) return false;
+  if (prevProps.jobs.length !== nextProps.jobs.length) return false;
+  for (let i = 0; i < prevProps.jobs.length; i++) {
+    if (prevProps.jobs[i] !== nextProps.jobs[i]) return false;
+  }
+  return true;
+});

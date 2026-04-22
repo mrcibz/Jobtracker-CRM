@@ -23,7 +23,7 @@ This table stores every job opportunity added to a specific board.
 | `contact_phone` | String | Phone number for follow-ups. |
 | `job_title` | String | Role/Position title (e.g., Frontend Developer). |
 | `location` | String | Physical location or "Remote". |
-| `status` | Enum | Current stage: `watchlist`, `applied`, `interview`, `offer`. |
+| `status` | Enum | Current stage: `wishlist`, `applied`, `interview`, `offer`. |
 | `notes` | Text | Detailed comments and interview brain-dumps. |
 | `salary_range` | String | Expected or offered salary (e.g., "30k-40k"). |
 | `next_action_date` | Date | Scheduled date for the next interview or follow-up. |

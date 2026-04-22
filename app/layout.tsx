@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "JobTracker CRM — Organize your job search with a simple kanban board",
   description:
-    "A lightweight kanban board for tracking your job opportunities: watchlist, applications, interviews, and offers.",
+    "A lightweight kanban board for tracking your job opportunities: wishlist, applications, interviews, and offers.",
 };
 
 export default function RootLayout({

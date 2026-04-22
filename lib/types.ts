@@ -1,7 +1,7 @@
 // Mirror of DB enums and table shapes.
 // Keep in sync with supabase/migrations/.
 
-export type JobStatus = "watchlist" | "applied" | "interview" | "offer";
+export type JobStatus = "wishlist" | "applied" | "interview" | "offer";
 
 export type ApplicationOutcome = "pending" | "accepted" | "rejected";
 
@@ -36,7 +36,7 @@ export const KANBAN_COLUMNS: {
   label: string;
   dot: string;
 }[] = [
-  { status: "watchlist", label: "Watchlist", dot: "bg-violet-500" },
+  { status: "wishlist", label: "Wishlist", dot: "bg-violet-500" },
   { status: "applied", label: "Applied", dot: "bg-orange-400" },
   { status: "interview", label: "Interview", dot: "bg-emerald-500" },
   { status: "offer", label: "Offer", dot: "bg-blue-500" },

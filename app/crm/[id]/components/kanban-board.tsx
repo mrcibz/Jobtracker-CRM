@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo, startTransition } from "react";
 import Link from "next/link";
 import { DragDropProvider } from "@dnd-kit/react";
 import type { Job, JobStatus } from "@/lib/types";
@@ -10,7 +10,7 @@ import { AddOfferModal } from "./add-offer-modal";
 import { createJob, updateJobStatus, updateJob } from "../actions";
 import { JobDetailDrawer } from "./job-detail-drawer";
 
-const VALID_STATUSES: JobStatus[] = ["watchlist", "applied", "interview", "offer"];
+const VALID_STATUSES: JobStatus[] = ["wishlist", "applied", "interview", "offer"];
 
 interface KanbanBoardProps {
   boardId: string;
@@ -26,29 +26,34 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
   const pendingDrags = useRef<Set<string>>(new Set());
 
   // Filter jobs
-  const filteredJobs = jobs.filter((job) => {
-    if (activeFilter !== "all" && job.status !== activeFilter) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return (
-        job.company_name.toLowerCase().includes(q) ||
-        job.job_title.toLowerCase().includes(q) ||
-        job.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
-    return true;
-  });
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((job) => {
+      if (activeFilter !== "all" && job.status !== activeFilter) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        return (
+          job.company_name.toLowerCase().includes(q) ||
+          job.job_title.toLowerCase().includes(q) ||
+          job.tags.some((t) => t.toLowerCase().includes(q))
+        );
+      }
+      return true;
+    });
+  }, [jobs, activeFilter, search]);
 
   // Group by status
-  const jobsByStatus: Record<JobStatus, Job[]> = {
-    watchlist: [],
-    applied: [],
-    interview: [],
-    offer: [],
-  };
-  for (const job of filteredJobs) {
-    jobsByStatus[job.status].push(job);
-  }
+  const jobsByStatus = useMemo(() => {
+    const grouped: Record<JobStatus, Job[]> = {
+      wishlist: [],
+      applied: [],
+      interview: [],
+      offer: [],
+    };
+    for (const job of filteredJobs) {
+      grouped[job.status].push(job);
+    }
+    return grouped;
+  }, [filteredJobs]);
 
   const handleCardClick = useCallback((job: Job) => {
     setSelectedJob(job);
@@ -58,7 +63,7 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
     async (formData: FormData) => {
       const tagsRaw = formData.get("tags") as string;
       const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
-      const status = (formData.get("status") as JobStatus) || "watchlist";
+      const status = (formData.get("status") as JobStatus) || "wishlist";
 
       const tempJob: Job = {
         id: crypto.randomUUID(),
@@ -96,11 +101,7 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 text-white">
-              <svg viewBox="0 0 20 20" className="h-4 w-4" fill="currentColor">
-                <rect x="3" y="4" width="3" height="12" rx="1" />
-                <rect x="8.5" y="4" width="3" height="8" rx="1" />
-                <rect x="14" y="4" width="3" height="5" rx="1" />
-              </svg>
+              <img src="../favicon.ico" alt="favicon" />
             </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-zinc-50">Job Tracker</span>
           </Link>
@@ -180,11 +181,15 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
           if (!job || job.status === newStatus) return;
 
           pendingDrags.current.add(jobId);
-          setJobs((prev) =>
-            prev.map((j) => (j.id === jobId ? { ...j, status: newStatus } : j))
-          );
-          updateJobStatus(jobId, boardId, newStatus).finally(() => {
-            pendingDrags.current.delete(jobId);
+          requestAnimationFrame(() => {
+            setJobs((prev) =>
+              prev.map((j) => (j.id === jobId ? { ...j, status: newStatus! } : j))
+            );
+            startTransition(() => {
+              updateJobStatus(jobId, boardId, newStatus!).finally(() => {
+                pendingDrags.current.delete(jobId);
+              });
+            });
           });
         }}
       >

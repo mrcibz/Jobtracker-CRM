@@ -22,7 +22,7 @@ export async function createBoard() {
   redirect(`/crm/${data.id}`);
 }
 
-// ── Quick-add a job (lands in Watchlist by default) ───────────
+// ── Quick-add a job (lands in Wishlist by default) ───────────
 export async function createJob(
   boardId: string,
   formData: FormData
@@ -36,7 +36,7 @@ export async function createJob(
   const contactPhone = (formData.get("contact_phone") as string) || null;
   const notes = (formData.get("notes") as string) || null;
   const salaryRange = (formData.get("salary_range") as string) || null;
-  const status = (formData.get("status") as JobStatus) || "watchlist";
+  const status = (formData.get("status") as JobStatus) || "wishlist";
   const isRemote = formData.get("is_remote") === "true";
   const tagsRaw = formData.get("tags") as string;
   const tags: string[] = tagsRaw ? JSON.parse(tagsRaw) : [];

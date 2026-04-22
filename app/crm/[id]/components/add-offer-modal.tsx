@@ -15,7 +15,7 @@ const inputClass =
 
 export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
   const [isPending, startTransition] = useTransition();
-  const [stage, setStage] = useState<JobStatus>("watchlist");
+  const [stage, setStage] = useState<JobStatus>("wishlist");
   const [isRemote, setIsRemote] = useState(false);
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -30,7 +30,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
   useEffect(() => {
     if (open) {
       firstInputRef.current?.focus();
-      setStage("watchlist");
+      setStage("wishlist");
       setIsRemote(false);
       setTagInput("");
       setTags([]);

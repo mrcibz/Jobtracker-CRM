@@ -55,7 +55,7 @@ app/
 ### 3.1 Component architecture
 ```
 KanbanBoard (client component — dnd-kit provider)
-├── KanbanColumn × 4 (watchlist | applied | interview | offer)
+├── KanbanColumn × 4 (wishlist | applied | interview | offer)
 │   ├── Column header (title + job count)
 │   └── JobCard × N (draggable)
 ├── QuickAddButton (floating FAB)
@@ -65,7 +65,7 @@ KanbanBoard (client component — dnd-kit provider)
 ### 3.2 Card content per column (minimal info per stage)
 | Column     | Card shows                                          |
 |------------|-----------------------------------------------------|
-| Watchlist  | Company, Role, link icon to `company_url`           |
+| Wishlist  | Company, Role, link icon to `company_url`           |
 | Applied    | Company, Role, days since `created_at`, outcome badge (pending/rejected) |
 | Interview  | Company, Role, `next_action_date` badge             |
 | Offer      | Company, Role, `salary_range`                        |
@@ -80,7 +80,7 @@ KanbanBoard (client component — dnd-kit provider)
 ### 3.4 Quick-Add flow
 - Floating "+" button
 - Modal/popover with 3 fields: **Role**, **Company**, **URL**
-- Inserts into Supabase with `status: 'watchlist'`
+- Inserts into Supabase with `status: 'wishlist'`
 - Optimistic UI: card appears immediately
 
 ### 3.5 Detail Drawer
@@ -98,7 +98,7 @@ KanbanBoard (client component — dnd-kit provider)
 | Action            | Input                        | Effect                              |
 |-------------------|------------------------------|-------------------------------------|
 | `createBoard`     | (none)                       | Insert board → return UUID          |
-| `createJob`       | board_id, company, role, url | Insert job (watchlist default)      |
+| `createJob`       | board_id, company, role, url | Insert job (wishlist default)      |
 | `updateJobStatus` | job_id, new status           | Update status column                |
 | `updateJob`       | job_id, partial fields       | Update any job fields               |
 | `deleteJob`       | job_id                       | Delete job row                      |

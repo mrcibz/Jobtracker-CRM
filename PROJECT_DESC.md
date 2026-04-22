@@ -38,7 +38,7 @@ When you open the app, you see a clean screen with only two massive buttons:
 ### 2. The Kanban Board (`/crm/[id]`)
 Your job search, visualized. A horizontal, swipable Kanban board featuring four primary stages. To prevent visual clutter and reduce stress, **cards only display the absolute minimum information needed for that specific stage**. You can click on any card to see the full details.
 
-1. **Watchlist:** Jobs you've found but haven't applied to yet.
+1. **Wishlist:** Jobs you've found but haven't applied to yet.
    * *Card UI shows:* Company Name, Role, and a quick-link icon to jump straight to the job post.
 2. **Applied:** CV sent. The waiting game begins.
    * *Card UI shows:* Company Name, Role, Days since applied, and **Outcome Badge** (Pending / Rejected). 
@@ -50,7 +50,7 @@ Your job search, visualized. A horizontal, swipable Kanban board featuring four 
    * *Card UI shows:* Company Name, Role, and the **Salary Range** (if known) to easily compare offers at a glance.
 
 ### 3. The "Quick-Add"
-Adding a job takes 5 seconds. Click the floating "➕ Add Job" button and drop in the **Role**, the **Company**, and the **URL**. By default, it lands in your Watchlist. 
+Adding a job takes 5 seconds. Click the floating "➕ Add Job" button and drop in the **Role**, the **Company**, and the **URL**. By default, it lands in your Wishlist. 
 
 ### 4. The Magic Detail View
 Click on any card to open the detail drawer (slides up on mobile, side panel on desktop). This is your private workspace for that specific opportunity where the minimum information is expanded:
