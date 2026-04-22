@@ -42,13 +42,13 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
           : "shadow-sm transition-all"
       }`}
     >
-      {/* Top row: company + remote badge + favicon */}
+      {/* Top row: company + remote/on-site badge + favicon */}
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-medium uppercase tracking-wider text-gray-400 dark:text-zinc-500">
           {job.company_name}
         </p>
         <div className="flex items-center gap-2">
-          {job.is_remote && (
+          {job.is_remote ? (
             <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
               <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="8" cy="6" r="4" />
@@ -56,7 +56,15 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
               </svg>
               Remote
             </span>
+          ) : (
+            <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
+              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+              </svg>
+              On-site
+            </span>
           )}
+          <img src="/favicon.ico" alt="Favicon" className="h-4 w-4 rounded-sm" />
         </div>
       </div>
 
@@ -86,7 +94,9 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
             $ {job.salary_range}
           </span>
         ) : (
-          <span />
+          <span className="inline-flex items-center gap-1 rounded-md bg-gray-50 px-2 py-0.5 text-[11px] italic text-gray-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+            Salary not specified
+          </span>
         )}
         <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">
           <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
