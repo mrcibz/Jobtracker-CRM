@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import type { Job, JobStatus } from "@/lib/types";
+import type { Job, JobStatus, ApplicationOutcome } from "@/lib/types";
 import { KANBAN_COLUMNS } from "@/lib/types";
 import { updateJob } from "../actions";
 
@@ -46,6 +46,15 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
       await updateJob(job.id, boardId, fields);
       onUpdated({ ...job, ...fields });
       setEditing(false);
+    });
+  }
+
+  function handleOutcomeChange(newOutcome: ApplicationOutcome) {
+    startTransition(async () => {
+      await updateJob(job.id, boardId, { application_outcome: newOutcome });
+      // If accepted, the DB trigger will promote it to 'interview'. Let's reflect it locally.
+      const newStatus = newOutcome === "accepted" && job.status !== "interview" ? "interview" : job.status;
+      onUpdated({ ...job, application_outcome: newOutcome, status: newStatus });
     });
   }
 
@@ -194,9 +203,46 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
               <span className="rounded-md bg-violet-100 px-2.5 py-1 text-xs font-medium text-violet-700 capitalize dark:bg-violet-500/20 dark:text-violet-300">
                 {job.status}
               </span>
-              <span className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 capitalize dark:bg-zinc-800 dark:text-zinc-300">
-                Outcome: {job.application_outcome}
-              </span>
+              
+              {job.status === "applied" ? (
+                <div className="flex items-center gap-1 rounded-md bg-gray-100 p-0.5 dark:bg-zinc-800">
+                  <button
+                    onClick={() => handleOutcomeChange("pending")}
+                    className={`rounded-sm px-2 py-0.5 text-xs font-medium transition-colors ${
+                      job.application_outcome === "pending"
+                        ? "bg-white text-gray-900 shadow-sm dark:bg-zinc-700 dark:text-white"
+                        : "text-gray-500 hover:text-gray-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    }`}
+                  >
+                    Pending
+                  </button>
+                  <button
+                    onClick={() => handleOutcomeChange("accepted")}
+                    className={`rounded-sm px-2 py-0.5 text-xs font-medium transition-colors ${
+                      job.application_outcome === "accepted"
+                        ? "bg-emerald-100 text-emerald-800 shadow-sm dark:bg-emerald-500/20 dark:text-emerald-300"
+                        : "text-gray-500 hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400"
+                    }`}
+                  >
+                    Accepted
+                  </button>
+                  <button
+                    onClick={() => handleOutcomeChange("rejected")}
+                    className={`rounded-sm px-2 py-0.5 text-xs font-medium transition-colors ${
+                      job.application_outcome === "rejected"
+                        ? "bg-red-100 text-red-800 shadow-sm dark:bg-red-500/20 dark:text-red-300"
+                        : "text-gray-500 hover:text-red-700 dark:text-zinc-400 dark:hover:text-red-400"
+                    }`}
+                  >
+                    Rejected
+                  </button>
+                </div>
+              ) : (
+                <span className="rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 capitalize dark:bg-zinc-800 dark:text-zinc-300">
+                  Outcome: {job.application_outcome}
+                </span>
+              )}
+
               {job.is_remote ? (
                 <span className="flex items-center gap-1 rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
                   <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">

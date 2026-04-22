@@ -52,7 +52,7 @@ export const KanbanColumn = memo(function KanbanColumn({
   return (
     <div
       className={`min-w-[280px] flex-1 ${
-        isDropTarget ? "bg-violet-50/50 dark:bg-violet-500/5" : ""
+        isDropTarget ? "bg-emerald-50/50 dark:bg-emerald-500/5" : ""
       }`}
     >
       {/* Column header */}
@@ -79,7 +79,7 @@ export const KanbanColumn = memo(function KanbanColumn({
       {/* Cards */}
       <div
         ref={ref}
-        className="mx-3 mb-4 flex flex-col gap-2.5 rounded-xl bg-gray-100/70 p-3 dark:bg-zinc-800/40"
+        className="mx-2 mb-4 flex flex-col gap-2.5 rounded-2xl bg-gray-50/80 p-2.5 dark:bg-zinc-800/30"
         style={{ minHeight: 80 }}
       >
         {jobs.map((job, index) => (
