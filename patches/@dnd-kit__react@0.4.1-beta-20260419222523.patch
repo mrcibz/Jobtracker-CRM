@@ -1,0 +1,11 @@
+diff --git a/index.js b/index.js
+index 9eca374aed9eb50fc08b92d72aba7d7092463faf..bb4fae1e79c59145dee5f6e7eb2e8895bdd2075c 100644
+--- a/index.js
++++ b/index.js
+@@ -1,4 +1,5 @@
+-import { createContext, memo, forwardRef, useState, useRef, useMemo, startTransition, useImperativeHandle, useEffect, useInsertionEffect, useContext, useCallback, createElement } from 'react';
++import { createContext, memo, forwardRef, useState, useRef, useMemo, startTransition, useImperativeHandle, useEffect, useContext, useCallback, createElement } from 'react';
++const useInsertionEffect = useEffect;
+ import { DragDropManager, resolveCustomizable, defaultPreset, Draggable, Feedback, Droppable } from '@dnd-kit/dom';
+ export { KeyboardSensor, PointerSensor } from '@dnd-kit/dom';
+ import { useIsomorphicLayoutEffect, useLatest, useOnValueChange, useDeepSignal, useOnElementChange, useComputed } from '@dnd-kit/react/hooks';
