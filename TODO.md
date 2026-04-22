@@ -1,8 +1,0 @@
-AÑADIR FAV ICON A CARDS ------------------> YA
-MOSTRAR TODA LA INFO EN PREVIEW
-CAMBIAR  EL COLOR DE FONDO 
-ARREGLAR EL LAG DEL DRAG & DROP  ------------------> YA
-STATUS EN APPLIED
-CAMBIAR WATCHLIST POR WISHLIST ------------------> YA
-
-CAMBIAR OFFER POR OFFERTS y la información ddebe de ser distinta.
