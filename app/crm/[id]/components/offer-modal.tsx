@@ -31,6 +31,7 @@ export function OfferModal({ job, open, onClose, onSave }: OfferModalProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!job) return;
 
     // Format notes by appending them elegantly
     let combinedNotes = job.notes || "";
