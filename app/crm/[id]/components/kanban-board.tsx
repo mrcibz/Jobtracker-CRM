@@ -326,6 +326,10 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
             setJobs((prev) => prev.map((j) => (j.id === updated.id ? updated : j)));
             setSelectedJob(updated);
           }}
+          onDeleted={(deletedId) => {
+            setJobs((prev) => prev.filter((j) => j.id !== deletedId));
+            setSelectedJob(null);
+          }}
         />
       )}
     </>

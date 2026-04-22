@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import type { Job, JobStatus, ApplicationOutcome } from "@/lib/types";
 import { KANBAN_COLUMNS } from "@/lib/types";
-import { updateJob } from "../actions";
+import { updateJob, deleteJob } from "../actions";
 
 const inputClass =
   "h-9 w-full rounded-lg border border-gray-200 bg-white px-3 text-sm outline-none transition-all placeholder:text-gray-400 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 dark:border-zinc-700 dark:bg-zinc-800 dark:placeholder:text-zinc-500 dark:focus:border-violet-400 dark:focus:ring-violet-400/10";
@@ -13,10 +13,12 @@ interface JobDetailDrawerProps {
   boardId: string;
   onClose: () => void;
   onUpdated: (job: Job) => void;
+  onDeleted: (jobId: string) => void;
 }
 
-export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailDrawerProps) {
+export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted }: JobDetailDrawerProps) {
   const [editing, setEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   // Edit form state
@@ -52,6 +54,13 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
       await updateJob(job.id, boardId, fields);
       onUpdated({ ...job, ...fields });
       setEditing(false);
+    });
+  }
+
+  function handleDelete() {
+    startTransition(async () => {
+      await deleteJob(job.id, boardId);
+      onDeleted(job.id);
     });
   }
 
@@ -96,6 +105,16 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
             >
               <svg viewBox="0 0 20 20" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14.5 2.5a2.12 2.12 0 013 3L6 17l-4 1 1-4L14.5 2.5z" />
+              </svg>
+            </button>
+            {/* Delete button */}
+            <button
+              onClick={() => setConfirmDelete(true)}
+              className="rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+              title="Delete job"
+            >
+              <svg viewBox="0 0 20 20" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6h14M8 6V4a1 1 0 011-1h2a1 1 0 011 1v2m3 0v11a2 2 0 01-2 2H6a2 2 0 01-2-2V6h12zM8 10v6M12 10v6" />
               </svg>
             </button>
             <button onClick={onClose} className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800">
@@ -422,6 +441,34 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated }: JobDetailD
           </div>
         )}
       </div>
+
+      {/* Delete confirmation */}
+      {confirmDelete && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirmDelete(false)} />
+          <div className="relative w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl dark:border-zinc-700 dark:bg-zinc-900">
+            <h3 className="mb-2 text-base font-semibold text-gray-900 dark:text-zinc-50">Delete this job?</h3>
+            <p className="mb-5 text-sm text-gray-500 dark:text-zinc-400">
+              <strong>{job.company_name}</strong> — {job.job_title}. This cannot be undone.
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="cursor-pointer rounded-lg px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={isPending}
+                className="cursor-pointer rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 disabled:opacity-60"
+              >
+                {isPending ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
