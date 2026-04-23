@@ -23,6 +23,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
   const [contactPerson, setContactPerson] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  const [companyUrl, setCompanyUrl] = useState("");
   const [offerNotes, setOfferNotes] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
@@ -38,6 +39,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
       setContactPerson("");
       setContactPhone("");
       setContactEmail("");
+      setCompanyUrl("");
       setOfferNotes("");
     }
   }, [open]);
@@ -76,6 +78,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
     formData.set("tags", JSON.stringify(tags));
     if (contactEmail) formData.set("contact_email", contactEmail);
     if (contactPhone) formData.set("contact_phone", contactPhone);
+    if (companyUrl) formData.set("company_url", companyUrl);
     if (offerNotes) formData.set("notes", offerNotes);
 
     startTransition(() => {
@@ -264,6 +267,21 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
 
             {showMore && (
               <div className="mt-3 space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/50">
+                {/* Company URL */}
+                <div>
+                  <label htmlFor="ao-company-url" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-zinc-300">
+                    Company Website
+                  </label>
+                  <input
+                    id="ao-company-url"
+                    type="url"
+                    value={companyUrl}
+                    onChange={(e) => setCompanyUrl(e.target.value)}
+                    placeholder="https://stripe.com"
+                    className={inputClass}
+                  />
+                </div>
+
                 {/* Contact Person */}
                 <div>
                   <label htmlFor="ao-contact-person" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-zinc-300">
@@ -340,7 +358,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
               disabled={isPending}
               className="cursor-pointer rounded-lg bg-violet-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-violet-700 disabled:opacity-60"
             >
-              {isPending ? "Adding..." : "Add Offer"}
+              {isPending ? "Adding..." : "Add Job"}
             </button>
           </div>
         </form>
