@@ -27,6 +27,7 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [activeFilter, setActiveFilter] = useState<"all" | JobStatus>("all");
   const [search, setSearch] = useState("");
+  const [copied, setCopied] = useState(false);
   const pendingDrags = useRef<Set<string>>(new Set());
   const originalJobRef = useRef<Map<string, Job>>(new Map());
 
@@ -71,6 +72,24 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
   const handleCardClick = useCallback((job: Job) => {
     setSelectedJob(job);
   }, []);
+
+  const handleCopyBoardId = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(boardId);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Fallback for clipboard blocked
+      const ta = document.createElement("textarea");
+      ta.value = boardId;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  }, [boardId]);
 
   const handleAdd = useCallback(
     async (formData: FormData) => {
@@ -179,25 +198,47 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
           <span className="hidden text-gray-300 sm:inline dark:text-zinc-600">/</span>
           <span className="hidden text-sm text-gray-600 sm:inline dark:text-zinc-400">My Job Search</span>
           <span className="text-xs text-gray-400 dark:text-zinc-500">{jobs.length} offers</span>
-        </div>
-
-        {/* Search */}
-        <div className="hidden items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 sm:flex dark:border-zinc-700 dark:bg-zinc-800">
-          <svg viewBox="0 0 20 20" className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="9" cy="9" r="6" />
-            <path d="M14 14l4 4" strokeLinecap="round" />
-          </svg>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search company, role, skill..."
-            className="w-56 bg-transparent text-sm outline-none placeholder:text-gray-400 dark:placeholder:text-zinc-500"
-          />
+          <button
+            onClick={handleCopyBoardId}
+            title="Copy board ID to clipboard"
+            className={`flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium transition-all ${
+              copied
+                ? "border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-500/15 dark:text-emerald-300"
+                : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+            }`}
+          >
+            {copied ? (
+              <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 10l3 3 7-7" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="7" y="7" width="10" height="10" rx="2" />
+                <path d="M13 7V5a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2" />
+              </svg>
+            )}
+            <span className="hidden sm:inline">{copied ? "Copied!" : "Copy board ID"}</span>
+            <span className="sm:hidden">{copied ? "Copied" : "ID"}</span>
+          </button>
         </div>
 
         {/* Right actions */}
         <div className="flex items-center gap-3">
+          {/* Search */}
+          <div className="hidden items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 sm:flex dark:border-zinc-700 dark:bg-zinc-800">
+            <svg viewBox="0 0 20 20" className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="9" cy="9" r="6" />
+              <path d="M14 14l4 4" strokeLinecap="round" />
+            </svg>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search company, role, skill..."
+              className="w-56 bg-transparent text-sm outline-none placeholder:text-gray-400 dark:placeholder:text-zinc-500"
+            />
+          </div>
+
           <button
             onClick={() => setAddModalOpen(true)}
             className="flex cursor-pointer items-center gap-2 rounded-lg bg-violet-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-violet-700 sm:px-4"
