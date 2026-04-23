@@ -66,16 +66,17 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
   }
 
   function handleOutcomeChange(newOutcome: ApplicationOutcome) {
-    // Accepted on applied card → auto-promote to interview without opening schedule modal
-    const promoteToInterview = newOutcome === "accepted" && job.status === "applied";
-    const fields = promoteToInterview
-      ? { application_outcome: newOutcome, status: "interview" as JobStatus }
-      : { application_outcome: newOutcome };
+    // Accepted on applied card → delegate to onMove so ScheduleInterviewModal opens;
+    // outcome flip to accepted is committed when the modal saves.
+    if (newOutcome === "accepted" && job.status === "applied") {
+      onMove(job.id, "interview");
+      return;
+    }
 
+    const fields = { application_outcome: newOutcome };
     startTransition(async () => {
       await updateJob(job.id, boardId, fields);
       onUpdated({ ...job, ...fields });
-      if (promoteToInterview) onClose();
     });
   }
 

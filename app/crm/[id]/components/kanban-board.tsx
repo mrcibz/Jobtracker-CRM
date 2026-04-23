@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useMemo, useEffect, startTransition } from "react";
 import Link from "next/link";
 import { DragDropProvider } from "@dnd-kit/react";
-import type { Job, JobStatus } from "@/lib/types";
+import type { Job, JobStatus, ApplicationOutcome } from "@/lib/types";
 import { KANBAN_COLUMNS } from "@/lib/types";
 import { KanbanColumn } from "./kanban-column";
 import { AddOfferModal } from "./add-offer-modal";
@@ -302,12 +302,21 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
           setInterviewModalJob(null);
         }}
         onSave={(jobId, interviewDate, updatedNotes) => {
-          // Save: apply DB update and update local UI
-          updateJob(jobId, boardId, { status: "interview", interview_date: interviewDate, notes: updatedNotes }).finally(() => {
+          // If promoted from applied, auto-accept the outcome
+          const original = originalJobRef.current.get(jobId);
+          const autoAccept = original?.status === "applied";
+          const outcomePatch = autoAccept ? { application_outcome: "accepted" as ApplicationOutcome } : {};
+
+          updateJob(jobId, boardId, {
+            status: "interview",
+            interview_date: interviewDate,
+            notes: updatedNotes,
+            ...outcomePatch,
+          }).finally(() => {
             pendingDrags.current.delete(jobId);
           });
           setJobs((prev) =>
-            prev.map((j) => (j.id === jobId ? { ...j, interview_date: interviewDate, notes: updatedNotes, status: "interview" } : j))
+            prev.map((j) => (j.id === jobId ? { ...j, interview_date: interviewDate, notes: updatedNotes, status: "interview", ...outcomePatch } : j))
           );
           originalJobRef.current.delete(jobId);
           setInterviewModalJob(null);
