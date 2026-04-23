@@ -5,6 +5,16 @@ export type JobStatus = "wishlist" | "applied" | "interview" | "offer";
 
 export type ApplicationOutcome = "pending" | "accepted" | "rejected";
 
+export type WorkMode = "remote" | "onsite" | "hybrid";
+
+export const WORK_MODE_CYCLE: WorkMode[] = ["onsite", "remote", "hybrid"];
+
+export const WORK_MODE_LABEL: Record<WorkMode, string> = {
+  onsite: "No",
+  remote: "Yes",
+  hybrid: "Hybrid",
+};
+
 export interface Board {
   id: string;
   created_at: string;
@@ -28,7 +38,7 @@ export interface Job {
   interview_date: string | null;
   offer_deadline: string | null;
   tags: string[];
-  is_remote: boolean;
+  work_mode: WorkMode;
   created_at: string;
   updated_at: string;
 }

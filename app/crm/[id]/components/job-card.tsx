@@ -75,13 +75,20 @@ export const JobCard = memo(function JobCard({ job, index, group, onCardClick }:
           </span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          {job.is_remote ? (
+          {job.work_mode === "remote" ? (
             <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-500 dark:text-emerald-400">
               <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="8" cy="6" r="4" />
                 <path d="M1.5 14c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" strokeLinecap="round" />
               </svg>
               Remote
+            </span>
+          ) : job.work_mode === "hybrid" ? (
+            <span className="flex items-center gap-1 text-[11px] font-medium text-indigo-500 dark:text-indigo-400">
+              <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m-9-9h18" />
+              </svg>
+              Hybrid
             </span>
           ) : (
             <span className="flex items-center gap-1 text-[11px] text-gray-400 dark:text-zinc-500">

@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useMemo, useEffect, startTransition } from "react";
 import Link from "next/link";
 import { DragDropProvider } from "@dnd-kit/react";
-import type { Job, JobStatus, ApplicationOutcome } from "@/lib/types";
+import type { Job, JobStatus, ApplicationOutcome, WorkMode } from "@/lib/types";
 import { KANBAN_COLUMNS } from "@/lib/types";
 import { KanbanColumn } from "./kanban-column";
 import { AddOfferModal } from "./add-offer-modal";
@@ -115,7 +115,10 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
         interview_date: null,
         offer_deadline: null,
         tags,
-        is_remote: formData.get("is_remote") === "true",
+        work_mode: (() => {
+          const m = formData.get("work_mode") as string | null;
+          return (m === "remote" || m === "hybrid" ? m : "onsite") as WorkMode;
+        })(),
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };

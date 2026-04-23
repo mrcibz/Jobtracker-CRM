@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
-import type { JobStatus } from "@/lib/types";
-import { KANBAN_COLUMNS } from "@/lib/types";
+import type { JobStatus, WorkMode } from "@/lib/types";
+import { KANBAN_COLUMNS, WORK_MODE_CYCLE, WORK_MODE_LABEL } from "@/lib/types";
 
 interface AddOfferModalProps {
   open: boolean;
@@ -16,7 +16,7 @@ const inputClass =
 export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
   const [isPending, startTransition] = useTransition();
   const [stage, setStage] = useState<JobStatus>("wishlist");
-  const [isRemote, setIsRemote] = useState(false);
+  const [workMode, setWorkMode] = useState<WorkMode>("onsite");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [showMore, setShowMore] = useState(false);
@@ -32,7 +32,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
     if (open) {
       firstInputRef.current?.focus();
       setStage("wishlist");
-      setIsRemote(false);
+      setWorkMode("onsite");
       setTagInput("");
       setTags([]);
       setShowMore(false);
@@ -74,7 +74,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
 
     const formData = new FormData(form);
     formData.set("status", stage);
-    formData.set("is_remote", String(isRemote));
+    formData.set("work_mode", workMode);
     formData.set("tags", JSON.stringify(tags));
     if (contactEmail) formData.set("contact_email", contactEmail);
     if (contactPhone) formData.set("contact_phone", contactPhone);
@@ -180,10 +180,15 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
               </label>
               <button
                 type="button"
-                onClick={() => setIsRemote(!isRemote)}
+                onClick={() => {
+                  const i = WORK_MODE_CYCLE.indexOf(workMode);
+                  setWorkMode(WORK_MODE_CYCLE[(i + 1) % WORK_MODE_CYCLE.length]);
+                }}
                 className={`flex h-10 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-all ${
-                  isRemote
+                  workMode === "remote"
                     ? "border-violet-300 bg-violet-50 text-violet-700 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-300"
+                    : workMode === "hybrid"
+                    ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-500/40 dark:bg-blue-500/15 dark:text-blue-300"
                     : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
                 }`}
               >
@@ -191,7 +196,7 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
                   <circle cx="8" cy="6" r="4" />
                   <path d="M1.5 14c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" strokeLinecap="round" />
                 </svg>
-                {isRemote ? "Yes" : "No"}
+                {WORK_MODE_LABEL[workMode]}
               </button>
             </div>
           </div>

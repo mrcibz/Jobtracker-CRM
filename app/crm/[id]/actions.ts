@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSupabaseServer } from "@/lib/supabase/server";
-import type { JobStatus, ApplicationOutcome } from "@/lib/types";
+import type { JobStatus, ApplicationOutcome, WorkMode } from "@/lib/types";
 
 // ── Create a new board and redirect to it ─────────────────────
 export async function createBoard() {
@@ -37,7 +37,9 @@ export async function createJob(
   const notes = (formData.get("notes") as string) || null;
   const salaryRange = (formData.get("salary_range") as string) || null;
   const status = (formData.get("status") as JobStatus) || "wishlist";
-  const isRemote = formData.get("is_remote") === "true";
+  const rawWorkMode = formData.get("work_mode") as string | null;
+  const workMode: WorkMode =
+    rawWorkMode === "remote" || rawWorkMode === "hybrid" ? rawWorkMode : "onsite";
   const tagsRaw = formData.get("tags") as string;
   const tags: string[] = tagsRaw ? JSON.parse(tagsRaw) : [];
 
@@ -51,7 +53,7 @@ export async function createJob(
     notes,
     salary_range: salaryRange,
     status,
-    is_remote: isRemote,
+    work_mode: workMode,
     tags,
   });
 
@@ -97,6 +99,7 @@ export async function updateJob(
     next_action_date?: string | null;
     interview_date?: string | null;
     offer_deadline?: string | null;
+    work_mode?: WorkMode;
   }
 ) {
   const supabase = getSupabaseServer();

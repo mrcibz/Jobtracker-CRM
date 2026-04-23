@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import type { Job, JobStatus, ApplicationOutcome } from "@/lib/types";
-import { KANBAN_COLUMNS } from "@/lib/types";
+import type { Job, JobStatus, ApplicationOutcome, WorkMode } from "@/lib/types";
+import { KANBAN_COLUMNS, WORK_MODE_CYCLE, WORK_MODE_LABEL } from "@/lib/types";
 import { updateJob, deleteJob } from "../actions";
 
 const inputClass =
@@ -27,7 +27,7 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
   const [companyName, setCompanyName] = useState(job.company_name);
   const [jobTitle, setJobTitle] = useState(job.job_title);
   const [salaryRange, setSalaryRange] = useState(job.salary_range ?? "");
-  const [isRemote, setIsRemote] = useState(job.is_remote);
+  const [workMode, setWorkMode] = useState<WorkMode>(job.work_mode);
   const [contactEmail, setContactEmail] = useState(job.contact_email ?? "");
   const [contactPhone, setContactPhone] = useState(job.contact_phone ?? "");
   const [notes, setNotes] = useState(job.notes ?? "");
@@ -44,7 +44,7 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
         job_title: jobTitle,
         salary_range: salaryRange || null,
         offer_salary: offerSalary || null,
-        is_remote: isRemote,
+        work_mode: workMode,
         contact_email: contactEmail || null,
         contact_phone: contactPhone || null,
         notes: notes || null,
@@ -166,14 +166,19 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
                 <label className="mb-1.5 block text-xs font-medium text-gray-500 dark:text-zinc-400">Remote</label>
                 <button
                   type="button"
-                  onClick={() => setIsRemote(!isRemote)}
+                  onClick={() => {
+                    const i = WORK_MODE_CYCLE.indexOf(workMode);
+                    setWorkMode(WORK_MODE_CYCLE[(i + 1) % WORK_MODE_CYCLE.length]);
+                  }}
                   className={`flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border px-3 text-xs font-medium transition-all ${
-                    isRemote
+                    workMode === "remote"
                       ? "border-violet-300 bg-violet-50 text-violet-700 dark:border-violet-500/40 dark:bg-violet-500/15 dark:text-violet-300"
+                      : workMode === "hybrid"
+                      ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-500/40 dark:bg-blue-500/15 dark:text-blue-300"
                       : "border-gray-200 bg-white text-gray-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
                   }`}
                 >
-                  {isRemote ? "Yes" : "No"}
+                  {WORK_MODE_LABEL[workMode]}
                 </button>
               </div>
             </div>
@@ -295,13 +300,20 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
                 </span>
               )}
 
-              {job.is_remote ? (
+              {job.work_mode === "remote" ? (
                 <span className="flex items-center gap-1 rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-500/20 dark:text-blue-300">
                   <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <circle cx="8" cy="6" r="4" />
                     <path d="M1.5 14c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" strokeLinecap="round" />
                   </svg>
                   Remote
+                </span>
+              ) : job.work_mode === "hybrid" ? (
+                <span className="flex items-center gap-1 rounded-md bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m-9-9h18" />
+                  </svg>
+                  Hybrid
                 </span>
               ) : (
                 <span className="flex items-center gap-1 rounded-md bg-orange-50 px-2.5 py-1 text-xs font-medium text-orange-700 dark:bg-orange-500/20 dark:text-orange-300">
