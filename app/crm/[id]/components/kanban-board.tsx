@@ -105,7 +105,7 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
         company_url: (formData.get("company_url") as string) || null,
         contact_email: (formData.get("contact_email") as string) || null,
         contact_phone: (formData.get("contact_phone") as string) || null,
-        location: null,
+        location: (formData.get("location") as string) || null,
         status,
         application_outcome: "pending",
         notes: (formData.get("notes") as string) || null,

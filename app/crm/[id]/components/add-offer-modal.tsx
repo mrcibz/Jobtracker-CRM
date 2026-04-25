@@ -161,6 +161,19 @@ export function AddOfferModal({ open, onClose, onAdd }: AddOfferModalProps) {
             />
           </div>
 
+          {/* Location */}
+          <div>
+            <label htmlFor="ao-location" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-zinc-300">
+              Location
+            </label>
+            <input
+              id="ao-location"
+              name="location"
+              placeholder="New York, NY"
+              className={inputClass}
+            />
+          </div>
+
           {/* Salary + Remote */}
           <div className="flex gap-3">
             <div className="flex-1">

@@ -83,7 +83,7 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl sm:p-6 dark:border-zinc-700 dark:bg-zinc-900">
+      <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl sm:p-6 dark:border-zinc-700 dark:bg-zinc-900 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {/* Header */}
         <div className="mb-5 flex items-start justify-between">
           <div className="min-w-0 flex-1">
@@ -472,7 +472,7 @@ export function JobDetailDrawer({ job, boardId, onClose, onUpdated, onDeleted, o
             <div className="mt-4 border-t border-gray-100 pt-4 dark:border-zinc-800">
               <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-zinc-400">Notes</h4>
               {job.notes ? (
-                <div className="prose prose-sm max-w-none rounded-xl bg-gray-50 p-4 text-gray-700 dark:prose-invert dark:bg-zinc-800/50 dark:text-zinc-300 max-h-48 overflow-y-auto overflow-x-hidden">
+                <div className="prose prose-sm max-w-none rounded-xl bg-gray-50 p-4 text-gray-700 dark:prose-invert dark:bg-zinc-800/50 dark:text-zinc-300 max-h-48 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   <p className="m-0 whitespace-pre-wrap break-words">{job.notes}</p>
                 </div>
               ) : (

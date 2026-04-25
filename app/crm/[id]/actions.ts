@@ -36,6 +36,7 @@ export async function createJob(
   const contactPhone = (formData.get("contact_phone") as string) || null;
   const notes = (formData.get("notes") as string) || null;
   const salaryRange = (formData.get("salary_range") as string) || null;
+  const location = (formData.get("location") as string) || null;
   const status = (formData.get("status") as JobStatus) || "wishlist";
   const rawWorkMode = formData.get("work_mode") as string | null;
   const workMode: WorkMode =
@@ -52,6 +53,7 @@ export async function createJob(
     contact_phone: contactPhone,
     notes,
     salary_range: salaryRange,
+    location,
     status,
     work_mode: workMode,
     tags,
