@@ -96,9 +96,11 @@ export function KanbanBoard({ boardId, initialJobs }: KanbanBoardProps) {
       const tagsRaw = formData.get("tags") as string;
       const tags = tagsRaw ? JSON.parse(tagsRaw) : [];
       const status = (formData.get("status") as JobStatus) || "wishlist";
+      const id = crypto.randomUUID();
+      formData.set("id", id);
 
       const tempJob: Job = {
-        id: crypto.randomUUID(),
+        id,
         board_id: boardId,
         company_name: formData.get("company_name") as string,
         job_title: formData.get("job_title") as string,

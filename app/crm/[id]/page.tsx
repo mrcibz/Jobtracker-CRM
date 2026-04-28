@@ -11,19 +11,22 @@ export default async function CrmPage({
   const { id } = await params;
   const supabase = getSupabaseServer();
 
-  const { data: board } = await supabase
+  const { data: board, error: boardError } = await supabase
     .from("boards")
     .select("id")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
+  if (boardError) throw new Error(`Failed to load board: ${boardError.message}`);
   if (!board) notFound();
 
-  const { data: jobs } = await supabase
+  const { data: jobs, error: jobsError } = await supabase
     .from("jobs")
     .select("*")
     .eq("board_id", id)
     .order("created_at", { ascending: true });
+
+  if (jobsError) throw new Error(`Failed to load jobs: ${jobsError.message}`);
 
   return (
     <div className="flex h-screen flex-col bg-gray-50 font-sans text-gray-900 dark:bg-zinc-950 dark:text-zinc-100">

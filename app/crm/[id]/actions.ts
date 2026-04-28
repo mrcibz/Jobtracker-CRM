@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import type { JobStatus, ApplicationOutcome, WorkMode } from "@/lib/types";
@@ -29,6 +28,7 @@ export async function createJob(
 ) {
   const supabase = getSupabaseServer();
 
+  const id = formData.get("id") as string;
   const companyName = formData.get("company_name") as string;
   const jobTitle = formData.get("job_title") as string;
   const companyUrl = (formData.get("company_url") as string) || null;
@@ -45,6 +45,7 @@ export async function createJob(
   const tags: string[] = tagsRaw ? JSON.parse(tagsRaw) : [];
 
   const { error } = await supabase.from("jobs").insert({
+    id,
     board_id: boardId,
     company_name: companyName,
     job_title: jobTitle,
@@ -60,8 +61,6 @@ export async function createJob(
   });
 
   if (error) throw new Error("Failed to create job");
-
-  revalidatePath(`/crm/${boardId}`);
 }
 
 // ── Move a card to a different column (drag & drop) ───────────
@@ -78,8 +77,6 @@ export async function updateJobStatus(
     .eq("id", jobId);
 
   if (error) throw new Error("Failed to update job status");
-
-  revalidatePath(`/crm/${boardId}`);
 }
 
 // ── Update any job fields (detail drawer save) ────────────────
@@ -112,8 +109,6 @@ export async function updateJob(
     .eq("id", jobId);
 
   if (error) throw new Error("Failed to update job");
-
-  revalidatePath(`/crm/${boardId}`);
 }
 
 // ── Delete a job card ─────────────────────────────────────────
@@ -126,6 +121,4 @@ export async function deleteJob(jobId: string, boardId: string) {
     .eq("id", jobId);
 
   if (error) throw new Error("Failed to delete job");
-
-  revalidatePath(`/crm/${boardId}`);
 }
